@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <extension key="org.civicrm.civirebux" type="module">
   <file>civirebux</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>CiviREBUX</name>
+  <description>Report Building module extension for CiviCRM</description>
   <license>AGPL-3.0</license>
   <maintainer>
-    <author>FIXME</author>
-    <email>FIXME</email>
+    <author>ypranay</author>
+    <email>y.pranay@gmail.com</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">http://FIXME</url>
@@ -20,7 +20,7 @@
   <compatibility>
     <ver>4.2</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
+  <comments>Boy! This is still undevelopment</comments>
   <civix>
     <namespace>CRM/Civirebux</namespace>
   </civix>

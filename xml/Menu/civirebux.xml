@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/civirebux/contributionreport</path>
+    <page_callback>CRM_Civirebux_Page_ContribReport</page_callback>
+    <title>ContribReport</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
