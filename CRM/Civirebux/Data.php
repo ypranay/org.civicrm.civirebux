@@ -2,7 +2,7 @@
 /**
  * Provide static methods to retrieve and format Contribution data.
  */
-class CRM_Contributionreport_Data {
+class CRM_Civirebux_Data {
 	protected static $fields = array();
 	protected static $emptyRow = array();
 	protected static $multiValues = array();
@@ -235,6 +235,7 @@ class CRM_Contributionreport_Data {
 	}
 
 	/**
+	 *TODO Do it for Contribution data
 	 * Return available Option Values of specified $field array.
 	 * If there is no available Option Values for the field, then return null.
 	 * 
