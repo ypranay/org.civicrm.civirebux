@@ -125,9 +125,37 @@ function civirebux_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 }
 
 /**
- * Functions below this ship commented out. Uncomment as required.
- *
+ * Implementation of hook_civicrm_pageRun
+ */
+function activityreport_civicrm_pageRun($page) {
+  if ($page instanceof CRM_Civirebux_Page_ContribReport) {
+    CRM_Core_Resources::singleton()
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/jquery-ui-1.9.2.custom.min.js')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/pivot.min.js', CRM_Core_Resources::DEFAULT_WEIGHT, 'page-header')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/c3.min.js')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/d3.min.js')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/d3.js')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/c3_renderers.js')
+      ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/export_renderers.js');
+    CRM_Core_Resources::singleton()
+      ->addStyleFile('org.civicrm.civirebux', 'css/pivottable/pivot.css')
+      ->addStyleFile('org.civicrm.civirebux', 'css/pivottable/c3.min.css')
+      ->addStyleFile('org.civicrm.civirebux', 'css/style.css');
+  }
+}
 
+/**
+ * Implementation of hook_civicrm_permission
+ *
+ * @param array $permissions
+ * @return void
+ */
+function activityreport_civicrm_permission(&$permissions) {
+  $prefix = ts('CiviCRM Reports') . ': '; // name of extension or module
+  $permissions += array(
+    'access CiviCRM Civirebux reports' => $prefix . ts('access CiviCRM Civirebux reports'),
+  );
+}
 /**
  * Implements hook_civicrm_preProcess().
  *
@@ -152,4 +180,4 @@ function civirebux_civicrm_navigationMenu(&$menu) {
     'separator' => 0,
   ));
   _civirebux_civix_navigationMenu($menu);
-} // */
+*/
