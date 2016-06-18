@@ -193,14 +193,14 @@ class CRM_Civirebux_Data {
 	 */
 	protected static function getActivityFields() {
 		// Get standard Fields of Activity entity.
-		$fields = CRM_Activity_DAO_Activity::fields();
+		$fields = CRM_Contribute_DAO_Contribution::fields();
 		if (!empty($fields['source_record_id'])) {
 			$fields['source_record_id']['title'] = t('Source Record ID');
 		}
 		if (!empty($fields['activity_type_id'])) {
 			$fields['activity_type_id']['title'] = t('Activity Type');
 		}
-		$keys = CRM_Activity_DAO_Activity::fieldKeys();
+		$keys = CRM_Contribute_DAO_Contribution::fieldKeys();
 		$result = array();
 		// Now get Custom Fields of Activity entity.
 		$customFieldsResult = CRM_Core_DAO::executeQuery(
@@ -209,7 +209,7 @@ class CRM_Civirebux_Data {
 				'FROM `civicrm_custom_group` g ' .
 				'LEFT JOIN `civicrm_custom_field` f ON f.custom_group_id = g.id ' .
 				'LEFT JOIN `civicrm_option_group` og ON og.id = f.option_group_id ' .
-				'WHERE g.extends = \'Activity\' AND g.is_active = 1 AND f.is_active = 1'
+				'WHERE g.extends = \'Contribution\' AND g.is_active = 1 AND f.is_active = 1'
 				);
 		while ($customFieldsResult->fetch()) {
 			$customField = new CRM_Core_BAO_CustomField();
@@ -235,7 +235,6 @@ class CRM_Civirebux_Data {
 	}
 
 	/**
-	 *TODO Do it for Contribution data
 	 * Return available Option Values of specified $field array.
 	 * If there is no available Option Values for the field, then return null.
 	 * 
@@ -247,7 +246,7 @@ class CRM_Civirebux_Data {
 		if (empty($field['pseudoconstant']['optionGroupName'])) {
 			return null;
 		}
-		$result = civicrm_api3('Activity', 'getoptions', array(
+		$result = civicrm_api3('Contribution', 'getoptions', array(
 					'field' => $field['name'],
 					));
 		return $result['values'];
