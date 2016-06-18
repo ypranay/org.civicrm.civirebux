@@ -13,14 +13,18 @@ class CRM_Civirebux_Data {
 	 * @return array
 	 */
 	public static function get() {
-		//TODO populate these vars properly
 		self::$fields = self::getContributionFields();
 		self::$emptyRow = self::getEmptyRow();
 		self::$multiValues = array();i
 	
 		try{
-			$activities = civicrm_api3('Contribution', 'get', array('contribution_id' => 1));
-			return self::splitMultiValues(self::formatResult($activities['values']));
+			$contributions = civicrm_api3('Contribution', 'get', array(
+				'sequential' => 1,
+				'api.Contribution.get' => array(),
+      				'return' => implode(',', array_keys(self::$fields)),
+      				'options' => array('sort' => 'id ASC', 'limit' => 0),
+			));
+			return self::splitMultiValues(self::formatResult($contributions['values']));
 		}
 		catch (CiviCRM_API3_Exception $e) {
  			$error = $e->getMessage();
@@ -170,9 +174,6 @@ class CRM_Civirebux_Data {
 		return strip_tags($value);
 	}
 	
-	/**
-	 * TODO: Empty Row for Contribution Data
-	 */
 	protected static function getEmptyRow() {
 		$result = array();
 		foreach (self::$fields as $key => $value) {
@@ -195,14 +196,15 @@ class CRM_Civirebux_Data {
 		// Get standard Fields of Activity entity.
 		$fields = CRM_Contribute_DAO_Contribution::fields();
 		if (!empty($fields['source_record_id'])) {
-			$fields['source_record_id']['title'] = t('Source Record ID');
+			$fields['source_record_id']['title'] = 'Source Record ID';
 		}
 		if (!empty($fields['activity_type_id'])) {
-			$fields['activity_type_id']['title'] = t('Activity Type');
+			$fields['activity_type_id']['title'] = 'Activity Type';
 		}
 		$keys = CRM_Contribute_DAO_Contribution::fieldKeys();
 		$result = array();
-		// Now get Custom Fields of Activity entity.
+	
+	// Now get Custom Fields of Activity entity.
 		$customFieldsResult = CRM_Core_DAO::executeQuery(
 				'SELECT g.id AS group_id, f.id AS id, f.label AS label, f.data_type AS data_type, ' .
 				'f.html_type AS html_type, f.date_format AS date_format, og.name AS option_group_name ' .
