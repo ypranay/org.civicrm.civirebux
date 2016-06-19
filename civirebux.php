@@ -153,9 +153,10 @@ function civirebux_civicrm_pageRun($page) {
 function civirebux_civicrm_permission(&$permissions) {
   $prefix = ts('CiviCRM Reports') . ': '; // name of extension or module
   $permissions += array(
-    'access CiviCRM Civirebux reports' => $prefix . ts('access CiviCRM Civirebux reports'),
+    'access CiviCRM Civirebux Contribution reports' => $prefix . ts('access CiviCRM Civirebux Contribution reports'),
   );
 }
+
 /**
  * Implements hook_civicrm_preProcess().
  *
@@ -180,4 +181,5 @@ function civirebux_civicrm_navigationMenu(&$menu) {
     'separator' => 0,
   ));
   _civirebux_civix_navigationMenu($menu);
-*/
+}*/
+
