@@ -5,7 +5,7 @@
 /**
  * Base class which provides helpers to execute upgrade logic
  */
-class CRM_Activityreport_Upgrader_Base {
+class CRM_Civirebux_Upgrader_Base {
 
   /**
    * @var varies, subclass of ttis
