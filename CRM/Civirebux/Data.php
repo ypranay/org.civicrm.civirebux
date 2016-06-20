@@ -15,21 +15,15 @@ class CRM_Civirebux_Data {
 	public static function get() {
 		self::$fields = self::getContributionFields();
 		self::$emptyRow = self::getEmptyRow();
-		self::$multiValues = array();i
+		self::$multiValues = array();
 	
-		try{
-			$contributions = civicrm_api3('Contribution', 'get', array(
+		$contributions = civicrm_api3('Contribution', 'get', array(
 				'sequential' => 1,
 				'api.Contribution.get' => array(),
       				'return' => implode(',', array_keys(self::$fields)),
-      				'options' => array('sort' => 'id ASC', 'limit' => 0),
+      				'options' => array('sort' => 'id ASC', 'limit' => 0)
 			));
-			return self::splitMultiValues(self::formatResult($contributions['values']));
-		}
-		catch (CiviCRM_API3_Exception $e) {
- 			$error = $e->getMessage();
-			//TODO Log this error
-		}
+		return self::splitMultiValues(self::formatResult($contributions['values']));
 	}
 
 	/**
@@ -192,7 +186,7 @@ class CRM_Civirebux_Data {
 	 * Return an array containing all Fields and Custom Fields of Activity entity, keyed by their API keys and extended with available fields Option Values.
 	 * @return array
 	 */
-	protected static function getActivityFields() {
+	protected static function getContributionFields() {
 		// Get standard Fields of Activity entity.
 		$fields = CRM_Contribute_DAO_Contribution::fields();
 		if (!empty($fields['source_record_id'])) {
