@@ -173,9 +173,9 @@ function civirebux_civicrm_preProcess($formName, &$form) {
  *
 function civirebux_civicrm_navigationMenu(&$menu) {
   _civirebux_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'org.civicrm.civirebux')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
+    'label' => ts('CiviREBUX', array('domain' => 'org.civicrm.civirebux')),
+    'name' => 'civirebux',
+    'url' => 'civicrm/civirebux/contributionreport',
     'permission' => 'access CiviReport,access CiviContribute',
     'operator' => 'OR',
     'separator' => 0,
