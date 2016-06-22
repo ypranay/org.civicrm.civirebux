@@ -1,3 +1,4 @@
+
 <h3>Contribution Summary Pivot Table</h3>
 <div id="reportPivotTable"></div>
 {literal}

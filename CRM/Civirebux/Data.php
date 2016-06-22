@@ -20,9 +20,10 @@ class CRM_Civirebux_Data {
 		$contributions = civicrm_api3('Contribution', 'get', array(
 				'sequential' => 1,
 				'api.Contribution.get' => array(),
-      				'return' => implode(',', array_keys(self::$fields)),
+      				'return' => implode(',',array_keys(self::$fields)),
       				'options' => array('sort' => 'id ASC', 'limit' => 0)
 			));
+		
 		return self::splitMultiValues(self::formatResult($contributions['values']));
 	}
 
@@ -165,14 +166,49 @@ class CRM_Civirebux_Data {
 		if (!empty(self::$fields[$key]['optionValues'])) {
 			return self::$fields[$key]['optionValues'][$value];
 		}
-		return strip_tags($value);
+		return strip_tags(self::customizeValue($key, $value));
 	}
 	
+
+
+	/**
+	 * Additional function for customizing Activity value by its key
+	 * (if it's needed). For example: we want to return Campaign's title
+	 * instead of ID.
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * @return string
+	 */
+	protected static function customizeValue($key, $value) {
+		$result = $value;
+		switch ($key) {
+			case 'campaign_id':
+				if (!empty($value)) {
+					$campaign = civicrm_api3('Campaign', 'getsingle', array(
+								'sequential' => 1,
+								'return' => "title",
+								'id' => $value,
+								));
+					if ($campaign['is_error']) {
+						$result = '';
+					} else {
+						$result = $campaign['title'];
+					}
+				}
+				break;
+		}
+		return $result;
+	}
+
+
+
+
 	protected static function getEmptyRow() {
 		$result = array();
 		foreach (self::$fields as $key => $value) {
-			if (!empty($value['contact_id'])) {
-				$key = $value['contact_id'];
+			if (!empty($value['contribution_id'])) {
+				$key = $value['contribution_id'];
 			}
 			$result[$key] = '';
 		}
@@ -181,24 +217,22 @@ class CRM_Civirebux_Data {
 	}
 
 	/**
-	 * TODO: DAO for Contribution Data
-
-	 * Return an array containing all Fields and Custom Fields of Activity entity, keyed by their API keys and extended with available fields Option Values.
+	 * Return an array containing all Fields and Custom Fields of Contribution entity, keyed by their API keys and extended with available fields Option Values.
 	 * @return array
 	 */
 	protected static function getContributionFields() {
-		// Get standard Fields of Activity entity.
+		// Get standard Fields of Contribution entity.
 		$fields = CRM_Contribute_DAO_Contribution::fields();
-		if (!empty($fields['source_record_id'])) {
-			$fields['source_record_id']['title'] = 'Source Record ID';
+		if (!empty($fields['contribution_id'])) {
+			$fields['contribution_id']['title'] = 'Contribution ID';
 		}
-		if (!empty($fields['activity_type_id'])) {
-			$fields['activity_type_id']['title'] = 'Activity Type';
+		if (!empty($fields['contribution_page_id'])) {
+			$fields['contribution_page_id']['title'] = 'Contribution Page ID';
 		}
 		$keys = CRM_Contribute_DAO_Contribution::fieldKeys();
 		$result = array();
 	
-	// Now get Custom Fields of Activity entity.
+		// Now get Custom Fields of Contribution entity.
 		$customFieldsResult = CRM_Core_DAO::executeQuery(
 				'SELECT g.id AS group_id, f.id AS id, f.label AS label, f.data_type AS data_type, ' .
 				'f.html_type AS html_type, f.date_format AS date_format, og.name AS option_group_name ' .
@@ -229,8 +263,9 @@ class CRM_Civirebux_Data {
 		}
 		return $result;
 	}
-
-	/**
+	
+	/*
+	 *
 	 * Return available Option Values of specified $field array.
 	 * If there is no available Option Values for the field, then return null.
 	 * 
@@ -238,7 +273,7 @@ class CRM_Civirebux_Data {
 	 * 
 	 * @return array
 	 */
-	protected static function getOptionValues($field) {
+	 protected static function getOptionValues($field) {
 		if (empty($field['pseudoconstant']['optionGroupName'])) {
 			return null;
 		}
