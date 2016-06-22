@@ -19,7 +19,7 @@ After installing the new page is available from the menu bar in your CiviCRM das
 What's New?
 ------
 
-I am using [Pivottable.js](http://nicolas.kruchten.com/pivottable) along with [Civix](https://github.com/totten/civix) to build CiviREBUX as of now. Here is a brief description of what these are - 
+I am using [Pivottable.js](http://nicolas.kruchten.com/pivottable) along with [Civix](https://github.com/totten/civix) to build CiviREBUX. Here is a brief description of what these are - 
 
 >  PivotTable.js
 
@@ -29,4 +29,4 @@ Pivottable.js enables data exploration and analysis by turning the CiviCRM Contr
 
 > Civix
 
-Civix is a command-line tool for building CiviCRM extensions, similar to scaffolding.
+Civix is a command-line tool for building CiviCRM extensions.
