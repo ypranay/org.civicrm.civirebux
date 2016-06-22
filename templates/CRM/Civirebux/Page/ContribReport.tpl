@@ -19,8 +19,11 @@
             aggregatorName: "Count",
 	    derivedAttributes: {
 		"Month-wise Receipts": derivers.dateFormat("Date Received", "%m-%n"),
-		"Day-wise Receipts": derivers.dateFormat("Date Received","%d")
-            },
+		"Day-wise Receipts": derivers.dateFormat("Date Received","%d"),
+	    	"Year-wise Receipts": derivers.dateFormat("Date Received","%y"),
+		"Hourly Receipts": derivers.dateFormat("Date Received","%H"),
+		"Day-wise Receipts": derivers.dateFormat("Date Received","%x")
+	    },
             unusedAttrsVertical: false,
         }, false);
     });
