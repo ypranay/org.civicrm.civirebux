@@ -7,7 +7,7 @@ class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
   * Hacky fix to remove duplicates. unset() wasn't working for unknown reasons. So, avoided the attributes which start with small letters <- Hack!!
   * Put the attributes which have uppercase initial letter into a new array and finally put the new array into another. ARRAYCEPTION!!
   *
-  * @return array of arrays having contribution data with only useful and required attributes
+  * @return array having contribution data with only useful and required attributes
   */
   public function filter($contribdata){
 	$newcontribdata = array(); 
