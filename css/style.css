@@ -19,6 +19,18 @@
     margin-right: 5px;
 }
 
+#instr {
+   color: #3D3D3D;
+   text-align: center;
+   float: center;
+   font: 14px, "Palatino Linotype";  
+}
+
+#hidden-banner {display: none;}
+.show {display: inline;}
+.show:focus ~ #hidden-banner,.hide {display: block; }
+.hide:focus ~ #hidden-banner,.hide { display: none; }
+
 /* Customizing CSS for PivotTable */
 .pvtAxisContainer li span.pvtAttr {
     height: auto;

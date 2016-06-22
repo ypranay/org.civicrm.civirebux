@@ -221,7 +221,6 @@ class CRM_Civirebux_Data {
 	 * @return array
 	 */
 	protected static function getContributionFields() {
-		// Get standard Fields of Contribution entity.
 		$fields = CRM_Contribute_DAO_Contribution::fields();
 		if (!empty($fields['contribution_id'])) {
 			$fields['contribution_id']['title'] = 'Contribution ID';
@@ -232,7 +231,6 @@ class CRM_Civirebux_Data {
 		$keys = CRM_Contribute_DAO_Contribution::fieldKeys();
 		$result = array();
 	
-		// Now get Custom Fields of Contribution entity.
 		$customFieldsResult = CRM_Core_DAO::executeQuery(
 				'SELECT g.id AS group_id, f.id AS id, f.label AS label, f.data_type AS data_type, ' .
 				'f.html_type AS html_type, f.date_format AS date_format, og.name AS option_group_name ' .
@@ -258,32 +256,9 @@ class CRM_Civirebux_Data {
 		$fields['sort_name'] = array('name' => 'sort_name', 'title' => 'Sort Name');
 		$fields['contact_type'] = array('name' => 'contact_type', 'title' => 'Contact Type');
 		foreach ($fields as $key => $value) {
-			/*if (!empty($keys[$value['name']])) {
-				$key = $value['name'];
-			}*/
 			$key = $value['name'];
 			$result[$key] = $value;
-	//		$result[$key]['optionValues'] = self::getOptionValues($value);
 		}
 		return $result;
 	}
-	
-	/*
-	 *
-	 * Return available Option Values of specified $field array.
-	 * If there is no available Option Values for the field, then return null.
-	 * 
-	 * @param array $field
-	 * 
-	 * @return array
-	 *
-	 protected static function getOptionValues($field) {
-		if (empty($field['pseudoconstant']['optionGroupName'])) {
-			return null;
-		}
-		$result = civicrm_api3('Contribution', 'getoptions', array(
-					'field' => $field['name'],
-					));
-		return $result['values'];
-	} */
 }

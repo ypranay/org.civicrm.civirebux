@@ -1,5 +1,6 @@
 <div id="banner">
-<strong>CiviREBUX</strong> is similar to the modern presentation softwares, yet different! Built using Pivottable.js, <strong>CiviREBUX</strong> comes equipped with a drag-n-drop interface which also supports multiple data transformation functionalities like pivoting, filtering , sorting et cetera. Dive in to discover its many use-cases:
+<strong>CiviREBUX</strong> is similar to the modern presentation softwares, yet different! Built using Pivottable.js, <strong>CiviREBUX</strong> comes equipped with a drag-n-drop interface which also supports multiple data transformation functionalities like pivoting, filtering, sorting et cetera. <a href="#" class="show">Expand</a> to discover its many use-cases!
+<div id="hidden-banner">
 <ul>
 <li><strong>Adding or Removing Attributes:</strong></li>
 To add an attribute into the pivot table, simply drag and drop the attribute from the pooled list just above the pivot table.
@@ -20,6 +21,8 @@ We have added support for a few custom attributes like Month-wise, Date-wise, Da
 <li><strong>Ordering:</strong></li>
 You can also change the order in which the attributes appear in the report by dragging and dropping them at desired positions!   
 </ul>
+<div id="instr"><em>...click elsewhere to automatically minimize...</em></div>
+</div>
 </div>
 <h3>Contribution Summary Pivot Table</h3>
 <div id="reportPivotTable"></div>
