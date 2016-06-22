@@ -172,7 +172,7 @@ class CRM_Civirebux_Data {
 
 
 	/**
-	 * Additional function for customizing Activity value by its key
+	 * Additional function for customizing Contribution value by its key
 	 * (if it's needed). For example: we want to return Campaign's title
 	 * instead of ID.
 	 * 
@@ -251,15 +251,18 @@ class CRM_Civirebux_Data {
 					'pseudoconstant' => array(
 						'optionGroupName' => $customFieldsResult->option_group_name,
 						),
-					'customField' => (array)$customField,
+					'customField' => (array)$customField
 					);
 		}
+		$fields['display_name'] = array('name' => 'display_name', 'title' => 'Display Name');
+		$fields['sort_name'] = array('name' => 'sort_name', 'title' => 'Sort Name');
 		foreach ($fields as $key => $value) {
-			if (!empty($keys[$value['name']])) {
+			/*if (!empty($keys[$value['name']])) {
 				$key = $value['name'];
-			}
+			}*/
+			$key = $value['name'];
 			$result[$key] = $value;
-			$result[$key]['optionValues'] = self::getOptionValues($value);
+	//		$result[$key]['optionValues'] = self::getOptionValues($value);
 		}
 		return $result;
 	}
@@ -272,7 +275,7 @@ class CRM_Civirebux_Data {
 	 * @param array $field
 	 * 
 	 * @return array
-	 */
+	 *
 	 protected static function getOptionValues($field) {
 		if (empty($field['pseudoconstant']['optionGroupName'])) {
 			return null;
@@ -281,5 +284,5 @@ class CRM_Civirebux_Data {
 					'field' => $field['name'],
 					));
 		return $result['values'];
-	}
+	} */
 }
