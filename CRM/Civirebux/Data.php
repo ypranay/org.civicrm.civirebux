@@ -256,6 +256,7 @@ class CRM_Civirebux_Data {
 		}
 		$fields['display_name'] = array('name' => 'display_name', 'title' => 'Display Name');
 		$fields['sort_name'] = array('name' => 'sort_name', 'title' => 'Sort Name');
+		$fields['contact_type'] = array('name' => 'contact_type', 'title' => 'Contact Type');
 		foreach ($fields as $key => $value) {
 			/*if (!empty($keys[$value['name']])) {
 				$key = $value['name'];
