@@ -1,6 +1,15 @@
 Civi**REBUX**
-======
-**RE**port **BU**ilding module e**X**tension for **CiviCRM**
+=============
+
+**RE**port  **BU**ilding module e**X**tension for
+==============
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Civicrm_Logo.png" width="300">
+
+This repository contains the design and implementation of a report building module extension for CiviCRM, built as a part of the **Google Summer of Code 2016** program. 
+
+----------
+
 
 This extension provides a new interface to CiviCRM Reports page, which is **much similar** to the most popular spreadsheet softwares, yet **very different** from them in terms of its **drag'n'drop UI** and extended functionality for **data exploration and analysis**. *Currently, I am working on supporting just CiviCRM Contribution data*.
 
