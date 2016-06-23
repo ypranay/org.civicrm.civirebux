@@ -16,14 +16,12 @@ class CRM_Civirebux_Data {
 		self::$fields = self::getContributionFields();
 		self::$emptyRow = self::getEmptyRow();
 		self::$multiValues = array();
-	
 		$contributions = civicrm_api3('Contribution', 'get', array(
 				'sequential' => 1,
 				'api.Contribution.get' => array(),
       				'return' => implode(',',array_keys(self::$fields)),
       				'options' => array('sort' => 'id ASC', 'limit' => 0)
 			));
-		
 		return self::splitMultiValues(self::formatResult($contributions['values']));
 	}
 
@@ -37,7 +35,6 @@ class CRM_Civirebux_Data {
 	 */
 	protected static function splitMultiValues(array $data) {
 		$result = array();
-
 		foreach ($data as $key => $row) {
 			if (!empty(self::$multiValues[$key])) {
 				$multiValuesFields = array_combine(self::$multiValues[$key], array_fill(0, count(self::$multiValues[$key]), 0));
@@ -46,7 +43,6 @@ class CRM_Civirebux_Data {
 				$result[] = $row;
 			}
 		}
-
 		return $result;
 	}
 
@@ -61,7 +57,6 @@ class CRM_Civirebux_Data {
 	protected static function populateMultiValuesRow(array $row, array $fields) {
 		$result = array();
 		$found = true;
-
 		while ($found) {
 			$rowResult = array();
 			foreach ($fields as $key => $index) {
@@ -79,7 +74,6 @@ class CRM_Civirebux_Data {
 				break;
 			}
 		}
-
 		return $result;
 	}
 
@@ -148,7 +142,6 @@ class CRM_Civirebux_Data {
 				case 'File':
 					return CRM_Utils_System::formatWikiURL($value['fileURL'] . ' ' . $value['fileName']);
 					break;
-					// For few field types we can use 'formatCustomValues()' core method.
 				case 'Date':
 				case 'Boolean':
 				case 'Link':
@@ -158,51 +151,14 @@ class CRM_Civirebux_Data {
 					CRM_Utils_System::url();
 					return CRM_Core_BAO_CustomGroup::formatCustomValues($data, self::$fields[$key]['customField']);
 					break;
-					// Anyway, 'formatCustomValues()' core method doesn't handle some types
-					// such as 'CheckBox' (looks like they aren't implemented there) so
-					// we deal with them automatically by custom handling of 'optionValues' array.
 			}
 		}
 		if (!empty(self::$fields[$key]['optionValues'])) {
 			return self::$fields[$key]['optionValues'][$value];
 		}
-		return strip_tags(self::customizeValue($key, $value));
+		return strip_tags($value);
 	}
 	
-
-
-	/**
-	 * Additional function for customizing Contribution value by its key
-	 * (if it's needed). For example: we want to return Campaign's title
-	 * instead of ID.
-	 * 
-	 * @param string $key
-	 * @param string $value
-	 * @return string
-	 */
-	protected static function customizeValue($key, $value) {
-		$result = $value;
-		switch ($key) {
-			case 'campaign_id':
-				if (!empty($value)) {
-					$campaign = civicrm_api3('Campaign', 'getsingle', array(
-								'sequential' => 1,
-								'return' => "title",
-								'id' => $value,
-								));
-					if ($campaign['is_error']) {
-						$result = '';
-					} else {
-						$result = $campaign['title'];
-					}
-				}
-				break;
-		}
-		return $result;
-	}
-
-
-
 
 	protected static function getEmptyRow() {
 		$result = array();
@@ -252,9 +208,12 @@ class CRM_Civirebux_Data {
 					'customField' => (array)$customField
 					);
 		}
+		
+		//Adding contact info attributes separately
 		$fields['display_name'] = array('name' => 'display_name', 'title' => 'Display Name');
 		$fields['sort_name'] = array('name' => 'sort_name', 'title' => 'Sort Name');
 		$fields['contact_type'] = array('name' => 'contact_type', 'title' => 'Contact Type');
+		
 		foreach ($fields as $key => $value) {
 			$key = $value['name'];
 			$result[$key] = $value;
