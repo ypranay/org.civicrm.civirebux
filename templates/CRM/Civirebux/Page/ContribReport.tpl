@@ -24,7 +24,15 @@ You can also change the order in which the attributes appear in the report by dr
 <div id="instr"><em>...click elsewhere to automatically minimize...</em></div>
 </div>
 </div>
-<h3>Contribution Summary Pivot Table</h3>
+<br>
+Select which CiviCRM data do you want to use?
+<select id="reporttype">
+<option value="Contribution">Contribution</option>
+<option value="Membership">Membership</option>
+</select>
+<input type='button' value='Go' id='selectData'>
+<br><br>
+<h3>{$CRMDataType} Summary Pivot Table</h3>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">

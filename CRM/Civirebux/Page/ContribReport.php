@@ -26,6 +26,7 @@ class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
   public function run() {
     	CRM_Utils_System::setTitle(ts('CiviREBUX: Contribution Report'));
 	$this->assign('contribData', json_encode(self::filter(CRM_Civirebux_Data::get()))); 
-    	parent::run();
+	$this->assign('CRMDataType','Membership');  
+  	parent::run();
   }
 }
