@@ -9,7 +9,7 @@ class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
   *
   * @return array having contribution data with only useful and required attributes
   */
-  public function filter($contribdata){
+  public function filterContributionAttribs($contribdata){
 	$newcontribdata = array(); 
 	foreach($contribdata as $data) {
 		$newdata = array();
@@ -22,12 +22,16 @@ class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
 	}
 	return $newcontribdata;
   }
-
+  
   public function run() {
     	CRM_Utils_System::setTitle(ts('CiviREBUX: Report Building Extension'));
 	$CRMDataType = isset($_POST['CRMData']) ? $_POST['CRMData'] : 'Contribution';
-	$this->assign('contribData', json_encode(self::filter(CRM_Civirebux_Data::get()))); 
-	
+	if($CRMDataType=='Contribution'){
+		$this->assign('pivotData', json_encode(self::filterContributionAttribs(CRM_Civirebux_Data::getContributionData())));
+	}
+	else{
+		$this->assign('pivotData', json_encode(CRM_Civirebux_Data::getMembershipData()));
+	}
 	$this->assign('CRMDataType',$CRMDataType);  
 	$options_array = array('Contribution' => 'Contribution','Membership' => 'Membership');
 	$this->assign('options_array',$options_array);  
