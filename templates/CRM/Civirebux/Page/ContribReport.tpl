@@ -87,10 +87,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
             		aggregatorName: "Count",
 	    		derivedAttributes: getDerivedAttributes(derivers),
 	    		sorters: function(attr) {
-                		if(attr == "Month-wise Receipts") {
+                		if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
                         		return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
                 		}
-                		if(attr == "Day-wise Receipts") {
+                		if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") {
                         		return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
                 		}
             		},
