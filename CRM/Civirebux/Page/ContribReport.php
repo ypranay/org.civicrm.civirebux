@@ -24,9 +24,13 @@ class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
   }
 
   public function run() {
-    	CRM_Utils_System::setTitle(ts('CiviREBUX: Contribution Report'));
+    	CRM_Utils_System::setTitle(ts('CiviREBUX: Report Building Extension'));
+	$CRMDataType = isset($_POST['CRMData']) ? $_POST['CRMData'] : 'Contribution';
 	$this->assign('contribData', json_encode(self::filter(CRM_Civirebux_Data::get()))); 
-	$this->assign('CRMDataType','Membership');  
-  	parent::run();
+	
+	$this->assign('CRMDataType',$CRMDataType);  
+	$options_array = array('Contribution' => 'Contribution','Membership' => 'Membership');
+	$this->assign('options_array',$options_array);  
+	parent::run();
   }
 }

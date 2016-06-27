@@ -25,12 +25,13 @@ You can also change the order in which the attributes appear in the report by dr
 </div>
 </div>
 <br>
-Select which CiviCRM data do you want to use?
-<select id="reporttype">
-<option value="Contribution">Contribution</option>
-<option value="Membership">Membership</option>
+<form id="whichDataType" method="post">
+Select which CiviCRM data do you want to use? (<em>default: Contribution</em>) 
+<select name="CRMData" id="CRMData">
+{html_options options=$options_array selected=$CRMDataType}
 </select>
-<input type='button' value='Go' id='selectData'>
+<input type="submit" value="Go"/>
+</form>
 <br><br>
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <div id="reportPivotTable"></div>
