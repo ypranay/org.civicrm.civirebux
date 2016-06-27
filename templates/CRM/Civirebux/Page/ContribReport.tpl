@@ -38,7 +38,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 {literal}
 <script type="text/javascript">
     CRM.$(function () {
-        var data = {/literal}{$contribData}{literal};
+        var data = {/literal}{$pivotData}{literal};
         var derivers = jQuery.pivotUtilities.derivers;
 	var sortAs = jQuery.pivotUtilities.sortAs;
 	jQuery("#reportPivotTable").pivotUI(data, {
@@ -49,22 +49,24 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 jQuery.pivotUtilities.export_renderers
             ),
             vals: ["Total"],
-            rows: ["Sort Name","Date Received","Total Amount"],
+            rows: [],
             cols: [],
             aggregatorName: "Count",
 	    derivedAttributes: {
+		/*
 		"Month-wise Receipts": derivers.dateFormat("Date Received", "%n"),
 		"Date-wise Receipts": derivers.dateFormat("Date Received","%d"),
 	    	"Year-wise Receipts": derivers.dateFormat("Date Received","%y"),
-		"Day-wise Receipts": derivers.dateFormat("Date Received","%w")
+		"Day-wise Receipts": derivers.dateFormat("Date Received","%w") */
 	    },
 	    sorters: function(attr) {
+		/*
                 if(attr == "Month-wise Receipts") {
                         return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
                 }
                 if(attr == "Day-wise Receipts") {
                         return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
-                }
+                }*/
             },
 	    autoSortUnusedAttrs: true,
             unusedAttrsVertical: false
