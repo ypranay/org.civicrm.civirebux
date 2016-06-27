@@ -128,7 +128,7 @@ function civirebux_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * Implementation of hook_civicrm_pageRun
  */
 function civirebux_civicrm_pageRun($page) {
-  if ($page instanceof CRM_Civirebux_Page_ContribReport) {
+  if ($page instanceof CRM_Civirebux_Page_Index) {
     CRM_Core_Resources::singleton()
       ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/jquery-ui-1.9.2.custom.min.js')
       ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/pivot.min.js', CRM_Core_Resources::DEFAULT_WEIGHT, 'page-header')
@@ -153,7 +153,7 @@ function civirebux_civicrm_pageRun($page) {
 function civirebux_civicrm_permission(&$permissions) {
   $prefix = ts('CiviCRM Reports') . ': '; // name of extension or module
   $permissions += array(
-    'access CiviCRM Civirebux Contribution reports' => $prefix . ts('access CiviCRM Civirebux Contribution reports'),
+    'access CiviCRM Civirebux' => $prefix . ts('access CiviCRM Civirebux'),
   );
 }
 

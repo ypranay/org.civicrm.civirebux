@@ -35,10 +35,10 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
         'domain_id'  => CRM_Core_Config::domainID(),
         'label'      => ts('CiviREBUX'),
         'name'       => 'civirebux',
-        'url'        => 'civicrm/civirebux/contributionreport',
+        'url'        => 'civicrm/civirebux',
         'parent_id'  => $reportsNavId,
         'weight'     => 0,
-        'permission' => 'access CiviCRM Civirebux Contribution reports',
+        'permission' => 'access CiviCRM Civirebux',
         'separator'  => 1,
         'is_active'  => 1
     );

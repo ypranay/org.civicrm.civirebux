@@ -2,7 +2,7 @@
 
 require_once 'CRM/Core/Page.php';
 
-class CRM_Civirebux_Page_ContribReport extends CRM_Core_Page {
+class CRM_Civirebux_Page_Index extends CRM_Core_Page {
   /*
   * Hacky fix to remove duplicates. unset() wasn't working for unknown reasons. So, avoided the attributes which start with small letters <- Hack!!
   * Put the attributes which have uppercase initial letter into a new array and finally put the new array into another. ARRAYCEPTION!!
