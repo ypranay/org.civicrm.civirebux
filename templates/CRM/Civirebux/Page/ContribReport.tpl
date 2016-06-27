@@ -41,7 +41,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	function getRows(){
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
-		var rows;
 		if(datatype == 'Contribution'){
 			rows = ['Sort Name','Date Received', 'Total Amount'];
 		}
@@ -50,6 +49,27 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		}
 		return rows;
 	}
+	function getDerivedAttributes(derivers){
+                var e = document.getElementById("CRMData");
+                var datatype = e.options[e.selectedIndex].value;
+		if(datatype == 'Contribution'){
+                        dict_functions = {
+                                "Month-wise Receipts": derivers.dateFormat("Date Received", "%n"),
+                                "Date-wise Receipts": derivers.dateFormat("Date Received","%d"),
+                                "Year-wise Receipts": derivers.dateFormat("Date Received","%y"),
+                                "Day-wise Receipts": derivers.dateFormat("Date Received","%w")
+                        };
+                }
+                else{
+                        dict_functions = {
+                                "Month-wise New Members": derivers.dateFormat("Membership Start Date", "%n"),
+                                "Date-wise New Members": derivers.dateFormat("Membership Start Date","%d"),
+                                "Year-wise New Members": derivers.dateFormat("Membership Start Date","%y"),
+                                "Day-wise New Members": derivers.dateFormat("Membership Start Date","%w")
+                        };
+                }
+                return dict_functions;
+        }
 	CRM.$(function () {
         	var data = {/literal}{$pivotData}{literal};
         	var derivers = jQuery.pivotUtilities.derivers;
@@ -65,12 +85,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
             		rows: getRows(),
             		cols: [],
             		aggregatorName: "Count",
-	    		derivedAttributes: {
-				"Month-wise Receipts": derivers.dateFormat("Date Received", "%n"),
-				"Date-wise Receipts": derivers.dateFormat("Date Received","%d"),
-	    			"Year-wise Receipts": derivers.dateFormat("Date Received","%y"),
-				"Day-wise Receipts": derivers.dateFormat("Date Received","%w") 
-	    		},
+	    		derivedAttributes: getDerivedAttributes(derivers),
 	    		sorters: function(attr) {
                 		if(attr == "Month-wise Receipts") {
                         		return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
