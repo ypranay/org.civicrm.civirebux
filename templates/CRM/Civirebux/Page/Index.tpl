@@ -42,7 +42,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
 		if(datatype == 'Contribution'){
-			rows = ['Sort Name','Date Received', 'Total Amount'];
+			rows = ['Display Name','Date Received', 'Total Amount'];
 		}
 		else{
 			rows = ['ID','Contact ID','Member Since','Membership Name','Relationship Name'];
