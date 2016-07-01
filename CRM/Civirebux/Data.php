@@ -246,21 +246,24 @@ class CRM_Civirebux_Data {
 		return $result;
 	}	
 
-
+	/*
+	* Resolved the duplicate issue. This method was returning names rather than titles in the output array, which got added to the list of attributes
+	* Now is keyed by Titles. So Voila! No need of filtering now!!
+	*/
 	protected static function getEmptyRow($isContribution) {
 		$result = array();
 		if($isContribution){
 			foreach (self::$fields as $key => $value) {
-				if (!empty($value['contribution_id'])) {
-					$key = $value['contribution_id'];
+				if (!empty($value['title'])) {
+					$key = $value['title'];
 				}
 				$result[$key] = '';
 			}
 		}
 		else{
 			foreach (self::$fields as $key => $value) {
-                                if (!empty($value['membership_type_id'])) {
-                                        $key = $value['membership_type_id'];
+                                if (!empty($value['title'])) {
+                                        $key = $value['title'];
                                 }
                                 $result[$key] = '';
                         }
