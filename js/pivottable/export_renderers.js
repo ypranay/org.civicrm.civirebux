@@ -1,3 +1,9 @@
+function getOutputFileName(){
+	var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
+	outputFile = outputFile+'.tsv';
+	return outputFile;
+}
+
 (function() {
   var callWithJQuery;
 
@@ -67,11 +73,17 @@
           r = result[n];
           text += r.join("\t") + "\n";
         }
-	window.open("data:text/tsv,"+encodeURIComponent(text));
-     	return $("<textarea>").text(text).css({
-          width: ($(window).width() / 2) + "px",
-          height: ($(window).height() / 2) + "px"
-        }); 
+
+	//Returns 2 jQuery objects: 1 for the link to download which also asks for file name and 2 for displaying it in the textbox
+	return [$('<a id="download" href="data:text/tsv,'+encodeURIComponent(text)+'"> Download as a TSV File </a> <br><br>').click(function() {
+			var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
+        		outputFile = outputFile+'.tsv';	
+			$('#download').attr('download',outputFile);
+		}), 
+	  	$('<textarea>').text(text).css({
+          		width: ($(window).width() / 2) + "px",
+          		height: ($(window).height() / 2) + "px"
+        })];
      },
 
     "CSV Export": function(pivotData, opts) {
@@ -128,11 +140,16 @@
           r = result[n];
           text += r.join(",") + "\n";
         }
-	window.open("data:text/csv,"+encodeURIComponent(text));
-        return $("<textarea>").text(text).css({
-          width: ($(window).width() / 2) + "px",
-          height: ($(window).height() / 2) + "px"
-        });
+	//Returns 2 jQuery objects: 1 for the link to download which also asks for file name and 2 for displaying it in the textbox
+      	return [$('<a id="download" href="data:text/csv,'+encodeURIComponent(text)+'"> Download as a CSV File </a> <br><br>').click(function() {
+                        var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
+                        outputFile = outputFile+'.csv';
+                        $('#download').attr('download',outputFile);
+                }),
+                $('<textarea>').text(text).css({
+                        width: ($(window).width() / 2) + "px",
+                        height: ($(window).height() / 2) + "px"
+        })];	
       }
     };
   });
