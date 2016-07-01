@@ -32,7 +32,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </select>
 <input type="submit" value="Go"/>
 </form>
-<br><br>
+<br>
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <div id="results"></div>
 <div id="reportPivotTable"></div>

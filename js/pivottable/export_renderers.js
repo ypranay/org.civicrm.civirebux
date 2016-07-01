@@ -1,7 +1,17 @@
-function getOutputFileName(){
-	var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
-	outputFile = outputFile+'.tsv';
-	return outputFile;
+function getcurrenttimestamp() {
+	var now = new Date();
+       	var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+      	var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+        var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+       	time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+       	time[0] = time[0] || 12;
+       	for ( var i = 1; i < 3; i++ ) {
+       		if ( time[i] < 10 ) {
+               		time[i] = "0" + time[i];
+                }
+       	}
+	alert(date.join("/")+"_"+time.join(":")+suffix);
+   	return date.join("/")+"_"+time.join(":")+suffix;
 }
 
 (function() {
@@ -75,15 +85,10 @@ function getOutputFileName(){
         }
 
 	//Returns 2 jQuery objects: 1 for the link to download which also asks for file name and 2 for displaying it in the textbox
-	return [$('<a id="download" href="data:text/tsv,'+encodeURIComponent(text)+'"> Download as a TSV File </a> <br><br>').click(function() {
-			var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
-        		outputFile = outputFile+'.tsv';	
+	return $('<a id="download" href="data:text/tsv,'+encodeURIComponent(text)+'"> Download as a TSV File </a>').click(function() {
+			var outputFile = "CiviREBUX_ReportTSV_"+getcurrenttimestamp()+'.tsv';
 			$('#download').attr('download',outputFile);
-		}), 
-	  	$('<textarea>').text(text).css({
-          		width: ($(window).width() / 2) + "px",
-          		height: ($(window).height() / 2) + "px"
-        })];
+		});
      },
 
     "CSV Export": function(pivotData, opts) {
@@ -140,16 +145,11 @@ function getOutputFileName(){
           r = result[n];
           text += r.join(",") + "\n";
         }
-	//Returns 2 jQuery objects: 1 for the link to download which also asks for file name and 2 for displaying it in the textbox
-      	return [$('<a id="download" href="data:text/csv,'+encodeURIComponent(text)+'"> Download as a CSV File </a> <br><br>').click(function() {
-                        var outputFile = window.prompt("Enter Filename (without extension)...","CiviREBUX_Report");
-                        outputFile = outputFile+'.csv';
+
+      	return $('<a id="download" href="data:text/csv,'+encodeURIComponent(text)+'"> Download as a CSV File </a>').click(function() {
+			var outputFile = "CiviREBUX_ReportCSV_"+getcurrenttimestamp()+'.csv';
                         $('#download').attr('download',outputFile);
-                }),
-                $('<textarea>').text(text).css({
-                        width: ($(window).width() / 2) + "px",
-                        height: ($(window).height() / 2) + "px"
-        })];	
+                });	
       }
     };
   });
