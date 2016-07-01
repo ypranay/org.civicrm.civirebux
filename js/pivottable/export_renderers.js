@@ -10,7 +10,6 @@ function getcurrenttimestamp() {
                		time[i] = "0" + time[i];
                 }
        	}
-	alert(date.join("/")+"_"+time.join(":")+suffix);
    	return date.join("/")+"_"+time.join(":")+suffix;
 }
 

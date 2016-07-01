@@ -26,6 +26,14 @@
    font: 14px, "Palatino Linotype";  
 }
 
+#download {
+	padding: 5px;
+	background-color: lightgrey;
+	color: #3D3D3D;
+	float: center;
+	vertical-align: top;
+}
+
 #hidden-banner {display: none;}
 .show {display: inline;}
 .show:focus ~ #hidden-banner,.hide {display: block; }
