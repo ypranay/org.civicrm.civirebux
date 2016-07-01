@@ -22,6 +22,7 @@ class CRM_Civirebux_Data {
       				'return' => implode(',',array_keys(self::$fields)),
       				'options' => array('sort' => 'id ASC', 'limit' => 0)
 			));
+
 		return self::splitMultiValues(self::formatContributionResult($contributions['values']));
 	}
 
@@ -227,6 +228,7 @@ class CRM_Civirebux_Data {
 	 */
 	protected static function customizeValue($key, $value) {
 		$result = $value;
+		//echo $key.":".$value."<br>";
 		switch ($key) {
 			case 'campaign_id':
 				if (!empty($value)) {
@@ -242,6 +244,31 @@ class CRM_Civirebux_Data {
 					}
 				}
 				break;
+			case 'contribution_status_id':
+				if(!empty($value)){
+					$result = CRM_Contribute_PseudoConstant::contributionStatus(NULL, 'name')[$value];					
+				}
+				break;
+			case 'contribution_page_id':
+				if(!empty($value)){
+                                        $result = CRM_Contribute_PseudoConstant::contributionPage($value, true);
+                                }	
+                                break;
+			case 'financial_type_id':
+                                if(!empty($value)){
+                                        $result = CRM_Contribute_PseudoConstant::financialType($value);
+                                }
+                                break;
+			case 'membership_type_id':
+				if(!empty($value)){
+                                        $result = CRM_Member_PseudoConstant::membershipType($value,FALSE);
+                                }
+                                break;		
+			case 'status_id':
+                                if(!empty($value)){
+                                        $result = CRM_Member_PseudoConstant::membershipStatus($value,NULL,'name',FALSE,FALSE);
+                                }
+                                break;
 		}
 		return $result;
 	}	
