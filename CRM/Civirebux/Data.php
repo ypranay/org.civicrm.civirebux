@@ -382,8 +382,8 @@ class CRM_Civirebux_Data {
 		$fields['membership_name'] = array('name' => 'membership_name', 'title' => 'Membership Name');
                 $fields['relationship_name'] = array('name' => 'relationship_name', 'title' => 'Relationship Name');
                 $fields['id'] = array('name' => 'id', 'title' => 'ID');
-		$fields['status_id'] = array('name' => 'status_id', 'title' => 'Status_ID');        	
-		$fields['is_pay_later'] = array('name' => 'is_pay_later', 'title' => 'Is_Pay_Later');        
+		$fields['status_id'] = array('name' => 'status_id', 'title' => 'Status ID');        	
+		$fields['is_pay_later'] = array('name' => 'is_pay_later', 'title' => 'Is Pay Later');        
 		foreach ($fields as $key => $value) {
                         $key = $value['name'];
                         $result[$key] = $value;
