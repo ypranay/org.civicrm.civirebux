@@ -34,12 +34,13 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </form>
 <br>
 <h3>{$CRMDataType} Summary Pivot Table</h3>
-<input id="save" type="button" value="Save"/>
-<input id="load" type="button" value="Load"/>
+<input type="button" value="Save" name="save" />
+<input type="button" value="Load" name="load" />
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">
+	var currConfig={};
 	function getRows(){
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
@@ -51,23 +52,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		}
 		return rows;
 	}
-
-	jQuery("#save").click(function (){
-		jQuery.ajax({
-	            	type: 'POST',
-			dataType: 'json',
-	            	data: 'type='+{/literal}{$CRMDataType}{literal},	
-	            	success: function(data) {
-				if(data){
-					alert("Success");
-				}
-				else{
-					alert("Failure");
-				}
-
-	                }});      
-	});	
-
 	function getDerivedAttributes(derivers){
                 var e = document.getElementById("CRMData");
                 var datatype = e.options[e.selectedIndex].value;
