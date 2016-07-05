@@ -34,20 +34,12 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </form>
 <br>
 <h3>{$CRMDataType} Summary Pivot Table</h3>
+<input id="save" type="button" value="Save"/>
+<input id="load" type="button" value="Load"/>
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">
-	
-	/* Saves config json every time onRefresh() is called. Adds a field to indicate it was a user-initiated save or otherwise. Finds the last non-user initiated saved config and 		adds the new config json in the list. Otherwise, the list will keep on getting bigger with time without deleting older config */
-	function saveCurrentConfig(jsonobj){
-		var getConfigs = JSON.parse(localStorage.getItem('pivotTableConfigurations') || [];
-		jsonobj['userFlag'] = false;
-		delete getConfigs[getLastUnsavedConfiguration(getConfigs,getConfigs.length-1)];	
-		getConfigs.push(jsonobj);
-		localStorage.setItem('pivotTableConfigurations', JSON.stringify(getConfigs));
-	}
-
 	function getRows(){
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
@@ -59,6 +51,23 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		}
 		return rows;
 	}
+
+	jQuery("#save").click(function (){
+		jQuery.ajax({
+	            	type: 'POST',
+			dataType: 'json',
+	            	data: 'type='+{/literal}{$CRMDataType}{literal},	
+	            	success: function(data) {
+				if(data){
+					alert("Success");
+				}
+				else{
+					alert("Failure");
+				}
+
+	                }});      
+	});	
+
 	function getDerivedAttributes(derivers){
                 var e = document.getElementById("CRMData");
                 var datatype = e.options[e.selectedIndex].value;
@@ -105,13 +114,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 		}
             		},
 	    		autoSortUnusedAttrs: true,
-           		unusedAttrsVertical: false,
-                	onRefresh: function (config) {
-                    		var config_copy = JSON.parse(JSON.stringify(config));
-				delete config_copy["rendererOptions"];
-                    		delete config_copy["localeStrings"];
-				saveCurrentConfig(config_copy,false);
-                	}
+           		unusedAttrsVertical: false
         	}, false);
     	});
 </script>
