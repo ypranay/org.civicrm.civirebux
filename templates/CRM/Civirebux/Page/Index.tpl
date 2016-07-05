@@ -97,6 +97,17 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         		return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
                 		}
             		},
+			onRefresh: function(config) {
+                    		var config_copy = JSON.parse(JSON.stringify(config));
+                    		delete config_copy["aggregators"];
+                    		delete config_copy["renderers"];
+                    		delete config_copy["rendererOptions"];
+                    		delete config_copy["localeStrings"];
+                		currConfig = config_copy;
+				for(var key in currConfig){
+					alert(key+"-->"+currConfig[key]);
+				}
+			},
 	    		autoSortUnusedAttrs: true,
            		unusedAttrsVertical: false
         	}, false);
