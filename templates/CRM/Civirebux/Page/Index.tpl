@@ -34,13 +34,26 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </form>
 <br>
 <h3>{$CRMDataType} Summary Pivot Table</h3>
-<input type="button" value="Save" name="save" />
-<input type="button" value="Load" name="load" />
+<input type="button" value="Save" id="save" />
+<input type="button" value="Load" id="load" />
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">
 	var currConfig={};
+	
+	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
+	
+	jQuery("#save").click( function(){
+		jQuery.ajax({
+                	type: "POST",
+                	url: crmAjaxURL,
+                	data: JSON.stringify(currConfig),
+                	contentType: 'application/json;charset=UTF-8'
+            	}).done(function(data){
+                     	alert("Configuration Saved!!");
+            	})});
+
 	function getRows(){
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
@@ -52,6 +65,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		}
 		return rows;
 	}
+
 	function getDerivedAttributes(derivers){
                 var e = document.getElementById("CRMData");
                 var datatype = e.options[e.selectedIndex].value;
@@ -73,6 +87,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 }
                 return dict_functions;
         }
+
 	CRM.$(function () {
         	var data = {/literal}{$pivotData}{literal};
         	var derivers = jQuery.pivotUtilities.derivers;
@@ -106,9 +121,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					"rendererName": config_copy["rendererName"],
 					"vals": config_copy["vals"]
 				};
-                		/*for(var key in currConfig){
-					alert(key+"->"+currConfig[key]);
-				}*/
 			},
 	    		autoSortUnusedAttrs: true,
            		unusedAttrsVertical: false
