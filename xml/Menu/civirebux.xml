@@ -9,7 +9,7 @@
 
   <item>
     <path>civicrm/civirebux/ajax/save</path>
-    <page_callback>CRM_Civirebux_BAO_SaveReport</page_callback>
+    <page_callback>CRM_Civirebux_BAO_SaveReport::save</page_callback>
     <title>Index</title>
     <access_arguments>access CiviCRM Civirebux</access_arguments>
   </item>
