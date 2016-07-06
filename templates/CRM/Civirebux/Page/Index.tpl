@@ -42,7 +42,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <script type="text/javascript">
 	var currConfig={};
 	
-	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
+	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save',{
+		className: 'CRM_Civirebux_BAO_SaveReport',
+		fnName: 'save'
+	});
 	
 	jQuery("#save").click( function(){
 		jQuery.ajax({
