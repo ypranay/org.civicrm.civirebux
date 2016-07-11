@@ -45,10 +45,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
 	
 	jQuery("#save").click( function(){
+		var name = prompt("Save Report As:");
 		jQuery.ajax({
                 	type: "POST",
                 	url: crmAjaxURL,
-                	data: 'renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
+                	data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
             	}).done(function(data){
 			for(var key in data){
 				alert(key+"->"+data[key])
