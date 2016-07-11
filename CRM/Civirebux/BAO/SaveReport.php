@@ -3,12 +3,18 @@ class CRM_Civirebux_BAO_SaveReport{
 	/**
 	* Handle AJAX request to save report configuration 
 	*/
-	static function save(){
-		$data = $_POST['save'];
-		$datajson = json_decode($data);
-		foreach($datajson as $key=>$value){
-			CRM_Core_Error::debug_var("key",$key);
-		}
-		$return = isset($_REQUEST['save']) ? CRM_Utils_Type::escape($_REQUEST['save'], 'String') : 'HAPPY!!' ;
+	public static function save(){
+		$renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : 'Table';
+		$aggregate = isset($_REQUEST['aggregate']) ? CRM_Utils_Type::escape($_REQUEST['aggregate'], 'String') : 'Count';
+		$vals = isset($_REQUEST['vals']) ? CRM_Utils_Type::escape($_REQUEST['vals'], 'String') : 'Total';
+		$rows = isset($_REQUEST['rows']) ? CRM_Utils_Type::escape($_REQUEST['rows'], 'String') : 'Display Name';
+		$cols = isset($_REQUEST['cols']) ? CRM_Utils_Type::escape($_REQUEST['cols'], 'String') : '';
+		$ret = array();
+    		$ret['renderer'] = $renderer;
+		$ret['aggregate'] = $aggregate;
+		$ret['vals'] = $vals;
+		$ret['rows'] = $rows;
+		$ret['cols'] = $cols;
+    		CRM_Utils_JSON::output($ret);
 	}
 }
