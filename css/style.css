@@ -34,6 +34,13 @@
 	vertical-align: top;
 }
 
+#save, #load {
+	float: right;
+	display: inline;
+	width: 7%;
+	padding: 5px;
+}
+
 #hidden-banner {display: none;}
 .show {display: inline;}
 .show:focus ~ #hidden-banner,.hide {display: block; }
