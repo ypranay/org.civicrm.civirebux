@@ -39,6 +39,16 @@ class CRM_Civirebux_Page_Index extends CRM_Core_Page {
         }
         echo implode("|",$names);	
 */
+/*
+	Testing if values are populated into the database when saved! Voila!! Works like a charm!!
+	
+	$dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_civirebux_configuration");
+        $names= array();
+        while ($dao->fetch()) {
+                array_push($names,$dao->name);
+        }
+        echo implode("<br>",$names);
+*/
 	parent::run();
   }
 }

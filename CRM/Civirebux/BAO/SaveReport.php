@@ -1,5 +1,5 @@
 <?php 
-class CRM_Civirebux_BAO_SaveReport extends CRM_Core_Page{
+class CRM_Civirebux_BAO_SaveReport{
 	/**
 	* Handle AJAX request to save report configuration 
 	*/
@@ -7,7 +7,7 @@ class CRM_Civirebux_BAO_SaveReport extends CRM_Core_Page{
 		$renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : 'Table';
 		$aggregate = isset($_REQUEST['aggregate']) ? CRM_Utils_Type::escape($_REQUEST['aggregate'], 'String') : 'Count';
 		$vals = isset($_REQUEST['vals']) ? CRM_Utils_Type::escape($_REQUEST['vals'], 'String') : 'Total';
-		$rows = isset($_REQUEST['rows']) ? CRM_Utils_Type::escape($_REQUEST['rows'], 'String') : 'Display Name';
+		$rows = isset($_REQUEST['rows']) ? CRM_Utils_Type::escape($_REQUEST['rows'], 'String') : '';
 		$cols = isset($_REQUEST['cols']) ? CRM_Utils_Type::escape($_REQUEST['cols'], 'String') : '';
 		$name = isset($_REQUEST['name']) ? CRM_Utils_Type::escape($_REQUEST['name'], 'String') : 'Default';
 		$dt = date('Y-m-d H:i:s');
@@ -19,7 +19,9 @@ class CRM_Civirebux_BAO_SaveReport extends CRM_Core_Page{
 		$ret['cols'] = $cols;
 		$ret['name'] = $name;
 		$ret['time'] = $dt;
-	//	CRM_Core_DAO::executeQuery('INSERT INTO civicrm_civirebux_configuration VALUES("'+$name+'","'+$renderer+'","'+$aggregate+'","'+$vals+'","'+$rows+'","'+$cols+'","'+$dt+'")';
+		$sql = "INSERT INTO civicrm_civirebux_configuration 
+		VALUES ('".$name."','".$renderer."','".$aggregate."','".$vals."','".$rows."','".$cols."','".$dt."')";
+		CRM_Core_DAO::executeQuery($sql);
     		CRM_Utils_JSON::output($ret);
 	}
 }
