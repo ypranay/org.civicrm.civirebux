@@ -51,9 +51,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 	url: crmAjaxURL,
                 	data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
             	}).done(function(data){
-			for(var key in data){
+			/*for(var key in data){
 				alert(key+"->"+data[key])
-			}
+			}*/
+			alert("Configuration Saved!!");
             	})});
 
 	function getRows(){

@@ -1,5 +1,5 @@
 <?php 
-class CRM_Civirebux_BAO_SaveReport{
+class CRM_Civirebux_BAO_SaveReport extends CRM_Core_Page{
 	/**
 	* Handle AJAX request to save report configuration 
 	*/
@@ -19,6 +19,7 @@ class CRM_Civirebux_BAO_SaveReport{
 		$ret['cols'] = $cols;
 		$ret['name'] = $name;
 		$ret['time'] = $dt;
+	//	CRM_Core_DAO::executeQuery('INSERT INTO civicrm_civirebux_configuration VALUES("'+$name+'","'+$renderer+'","'+$aggregate+'","'+$vals+'","'+$rows+'","'+$cols+'","'+$dt+'")';
     		CRM_Utils_JSON::output($ret);
 	}
 }
