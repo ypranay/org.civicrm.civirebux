@@ -5,7 +5,7 @@ class CRM_Civirebux_BAO_SaveReport{
 	*/
 	public static function save(){
 		$renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : 'Table';
-		$aggregate = isset($_REQUEST['aggregate']) ? CRM_Utils_Type::escape($_REQUEST['aggregate'], 'String') : 'Count';
+		$aggregator = isset($_REQUEST['aggregator']) ? CRM_Utils_Type::escape($_REQUEST['aggregator'], 'String') : 'Count';
 		$vals = isset($_REQUEST['vals']) ? CRM_Utils_Type::escape($_REQUEST['vals'], 'String') : 'Total';
 		$rows = isset($_REQUEST['rows']) ? CRM_Utils_Type::escape($_REQUEST['rows'], 'String') : '';
 		$cols = isset($_REQUEST['cols']) ? CRM_Utils_Type::escape($_REQUEST['cols'], 'String') : '';
@@ -13,14 +13,14 @@ class CRM_Civirebux_BAO_SaveReport{
 		$dt = date('Y-m-d H:i:s');
 		$ret = array();
     		$ret['renderer'] = $renderer;
-		$ret['aggregate'] = $aggregate;
+		$ret['aggregator'] = $aggregator;
 		$ret['vals'] = $vals;
 		$ret['rows'] = $rows;
 		$ret['cols'] = $cols;
 		$ret['name'] = $name;
 		$ret['time'] = $dt;
 		$sql = "INSERT INTO civicrm_civirebux_configuration 
-		VALUES ('".$name."','".$renderer."','".$aggregate."','".$vals."','".$rows."','".$cols."','".$dt."')";
+		VALUES ('".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$dt."')";
 		CRM_Core_DAO::executeQuery($sql);
     		CRM_Utils_JSON::output($ret);
 	}
