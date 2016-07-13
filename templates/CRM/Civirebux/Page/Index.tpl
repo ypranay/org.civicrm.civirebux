@@ -46,14 +46,20 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
 	
 	jQuery("#save").click( function(){
-		var name = prompt("Save Report As:");
+		var name = prompt("Save Report As:","Default");
+		if(name === null) {
+			CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
+			return;	
+		} 
 		jQuery.ajax({
                 	type: "POST",
                 	url: crmAjaxURL,
                 	data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
             	}).done(function(data){
-			alert('Configuration Saved!!');
-            	})});
+			CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+            	}).fail(function(data){
+			CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
+		})});
 
 	function getRows(){
 		var e = document.getElementById("CRMData");
