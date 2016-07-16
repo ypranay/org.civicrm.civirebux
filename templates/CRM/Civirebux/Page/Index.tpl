@@ -43,10 +43,27 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <script type="text/javascript">
 	var currConfig={};
 	
+	
+	function getTimeStamp() {
+  		var now = new Date();
+  		var date = [ now.getDate() , now.getMonth()+1 , now.getFullYear() ];
+  		var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+  		var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+  		time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+  		time[0] = time[0] || 12;
+  		for ( var i = 1; i < 3; i++ ) {
+    			if ( time[i] < 10 ) {
+      				time[i] = "0" + time[i];
+    			}
+  		}
+  		return date.join("/") + "_" + time.join(":") + suffix;
+	}
+
+	
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
 	
 	jQuery("#save").click( function(){
-		var name = prompt("Save Report As:","Default");
+		var name = prompt("Save Report As:","CiviREBUX Report "+getTimeStamp());
 		if(name === null) {
 			CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
 			return;	
