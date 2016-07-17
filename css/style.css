@@ -41,6 +41,10 @@
 	padding: 5px;
 }
 
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
 #hidden-banner {display: none;}
 .show {display: inline;}
 .show:focus ~ #hidden-banner,.hide {display: block; }

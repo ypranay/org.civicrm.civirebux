@@ -37,12 +37,15 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
 <br>
+<div id="saveDialog" style="display:none;">
+<label for="saveReportAs">{ts}Save Report As{/ts}:</label>
+<input id="saveReportAs" size="40">
+</div>
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">
 	var currConfig={};
-	
 	
 	function getTimeStamp() {
   		var now = new Date();
@@ -59,23 +62,38 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
   		return date.join("/") + "_" + time.join(":") + suffix;
 	}
 
-	
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
 	
-	jQuery("#save").click( function(){
-		var name = prompt("Save Report As:","CiviREBUX Report "+getTimeStamp());
-		if(name === null) {
-			CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
-			return;	
-		} 
-		jQuery.ajax({
-                	type: "POST",
-                	url: crmAjaxURL,
-                	data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
-            	}).done(function(data){
-			CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
-            	}).fail(function(data){
-			CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
+	cj("#save").click( function(){
+		var currTimeStamp = getTimeStamp();
+		cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
+		cj("#saveDialog").dialog({
+			width: 400,	
+			dialogClass: "no-close",
+			title: "Save Report",
+			buttons: {
+				"OK": function(){
+					var name = cj("#saveReportAs").val();
+					if(name == ''){
+						name = "CiviREBUX Report "+currTimeStamp;
+					}
+					jQuery.ajax({
+						type: "POST",
+						url: crmAjaxURL,
+						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
+					}).done(function (data){
+						cj("#saveDialog").dialog("close");
+						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+					}).fail(function (data){
+						CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
+					});
+				},
+				"Cancel": function(){
+					cj("#saveDialog").dialog("close");
+					CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
+					return;
+				}
+			}
 		})});
 
 	function getRows(){
