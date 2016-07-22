@@ -35,7 +35,24 @@ class CRM_Civirebux_BAO_Report{
 			$config['name'] = $dao->name;
 			array_push($array_configs,$config);
 		}
-		CRM_Core_Error::debug_var("records->",$array_configs);
 		CRM_Utils_JSON::output($array_configs);
 	}
+
+	public static function load(){
+		$id = isset($_REQUEST['id']) ? CRM_Utils_Type::escape($_REQUEST['id'], 'Integer') : 1;	
+                $sql = "SELECT * FROM civicrm_civirebux_configuration WHERE id=".$id;
+                $dao = CRM_Core_DAO::executeQuery($sql);
+                $config = array();
+                while($dao->fetch()){
+			$config['renderer'] = $dao->renderer;
+                	$config['aggregator'] = $dao->aggregator;
+                	$config['vals'] = $dao->vals;
+                	$config['rows'] = $dao->rows;
+                	$config['cols'] = $dao->cols;
+                	$config['name'] = $dao->name;
+                	$config['time'] = $dao->time;
+                        $config['id'] = $dao->id;
+                }
+                CRM_Utils_JSON::output($config);
+        }
 }

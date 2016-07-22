@@ -99,7 +99,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			}
 		})});
 
-	var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');	
+	var crmLoadAllAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');	
+	var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/load');
 
 	cj("#load").click( function(){
                 cj("#loadDialog").dialog({
@@ -109,7 +110,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         open: function() {
 				jQuery.ajax({
                                 	type: "POST",
-                                        url: crmLoadAjaxURL
+                                        url: crmLoadAllAjaxURL
                                 }).done(function (data){
 					var htmlstring = '<select id="listofreports">'
 					for(var i=0; i < data.length; i++){
@@ -118,17 +119,30 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					htmlstring += '</select>'
 					cj("#loadDialogList").html(htmlstring);
                                 }).fail(function (data){
-                                        CRM.alert(ts('Error Loaded!!'),'CiviREBUX: Error','error',{'expires':3000});
+                                        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
                                 });
 				return;
     			},
 			buttons: {
                                 "OK": function(){
 					var sel = cj("#listofreports option:selected").val();
-					alert(sel);
+					jQuery.ajax({
+                                                type: "POST",
+                                                url: crmLoadAjaxURL,
+                                                data: 'id='+sel,
+                                        }).done(function (data){
+						// data is working fine!!
+                                                cj("#loadDialog").dialog("close");
+                                                CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
+                                        }).fail(function (data){
+                                                CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
+                                        });
+					return;
                                 },
                                 "Cancel": function(){
-                                        alert("cancel is pressed");
+					cj("#loadDialog").dialog("close");
+                                        CRM.alert(ts('Configuration was not loaded!!'),'CiviREBUX: Alert','alert',{'expires':1500});
+                                        return;
                                 }
                         }
                 })});	
