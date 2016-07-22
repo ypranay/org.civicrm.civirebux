@@ -41,6 +41,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <label for="saveReportAs">{ts}Save Report As{/ts}:</label>
 <input id="saveReportAs" size="40">
 </div>
+<div id="loadDialog" style="display:none;">
+<div id="loadDialogList" style="width: 50px;"> </div>
+</div>
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
@@ -95,6 +98,40 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				}
 			}
 		})});
+
+	var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');	
+
+	cj("#load").click( function(){
+                cj("#loadDialog").dialog({
+			width: 400,
+                        dialogClass: "no-close",
+                        title: "Load Report",
+                        open: function() {
+				jQuery.ajax({
+                                	type: "POST",
+                                        url: crmLoadAjaxURL
+                                }).done(function (data){
+					var htmlstring = '<select id="listofreports">'
+					for(var i=0; i < data.length; i++){
+						htmlstring += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+					}
+					htmlstring += '</select>'
+					cj("#loadDialogList").html(htmlstring);
+                                }).fail(function (data){
+                                        CRM.alert(ts('Error Loaded!!'),'CiviREBUX: Error','error',{'expires':3000});
+                                });
+				return;
+    			},
+			buttons: {
+                                "OK": function(){
+					var sel = cj("#listofreports option:selected").val();
+					alert(sel);
+                                },
+                                "Cancel": function(){
+                                        alert("cancel is pressed");
+                                }
+                        }
+                })});	
 
 	function getRows(){
 		var e = document.getElementById("CRMData");
