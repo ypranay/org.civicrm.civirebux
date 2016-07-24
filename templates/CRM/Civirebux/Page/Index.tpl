@@ -36,12 +36,13 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
-<br>
+<br><br>
 <div id="saveDialog" style="display:none;">
 <label for="saveReportAs">{ts}Save Report As{/ts}:</label>
 <input id="saveReportAs" size="40">
 </div>
 <div id="loadDialog" style="display:none;">
+<label for="loadDialogList">{ts}Select One of the Saved Reports:{/ts}</label><br>
 <div id="loadDialogList" style="width: 50px;"> </div>
 </div>
 <div id="results"></div>
@@ -58,7 +59,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 
 	function getTimeStamp() {
   		var now = new Date();
-  		var date = [ now.getDate() , now.getMonth()+1 , now.getFullYear() ];
+  		var currdate = [ now.getFullYear(), now.getMonth()+1, now.getDate()];
   		var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
   		var suffix = ( time[0] < 12 ) ? "AM" : "PM";
   		time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
@@ -68,7 +69,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
       				time[i] = "0" + time[i];
     			}
   		}
-  		return date.join("/") + "_" + time.join(":") + suffix;
+  		return currdate.join("-") + " " + time.join(":") + suffix;
 	}
 
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
@@ -77,7 +78,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var currTimeStamp = getTimeStamp();
 		cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
 		cj("#saveDialog").dialog({
-			width: 400,	
+			width: 400,
+			modal: true,	
 			dialogClass: "no-close",
 			title: "Save Report",
 			buttons: {
@@ -111,6 +113,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	cj("#load").click( function(){
                 cj("#loadDialog").dialog({
 			width: 400,
+			modal: true,
                         dialogClass: "no-close",
                         title: "Load Report",
                         open: function() {
@@ -127,7 +130,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                 }).fail(function (data){
                                         CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
                                 });
-				return;
     			},
 			buttons: {
                                 "OK": function(){
@@ -176,16 +178,13 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                					}, true);								
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         }).fail(function (data){
-                                                CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
-						cj("#loadDialog").dialog("destroy");
+                                        	cj("#loadDialog").dialog("close");
+					        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
                                         });
-					return;
                                 },
                                 "Cancel": function(){
 					cj("#loadDialog").dialog("close");
-					cj("#loadDialog").dialog("destroy");
                                         CRM.alert(ts('Configuration was not loaded!!'),'CiviREBUX: Alert','alert',{'expires':1500});
-                                        return;
                                 }
                         }
                 })});	
