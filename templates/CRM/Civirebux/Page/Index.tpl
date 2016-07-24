@@ -102,7 +102,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				"Cancel": function(){
 					cj("#saveDialog").dialog("close");
 					CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
-					return;
 				}
 			}
 		})});
@@ -150,9 +149,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                 				jQuery.pivotUtilities.c3_renderers,
                                 				jQuery.pivotUtilities.export_renderers
                         				),
-                        				vals: data['vals'].split(','),
-                        				rows: data['rows'].split(','),
-                        				cols: data['cols'].split(','),
+                        				vals: data['vals'].split('#'),
+                        				rows: data['rows'].split('#'),
+                        				cols: data['cols'].split('#'),
                        					aggregatorName: data['aggregator'],
                         				derivedAttributes: getDerivedAttributes(derivers),
                         				sorters: function(attr) {
@@ -166,11 +165,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					onRefresh: function(config) {
                                					var config_copy = JSON.parse(JSON.stringify(config));
                                					currConfig = {
-                                       					"rows": config_copy["rows"],
-                                       					"cols": config_copy["cols"],
+                                       					"rows": config_copy["rows"].join('#'),
+                                       					"cols": config_copy["cols"].join('#'),
                                        					"aggregatorName": config_copy["aggregatorName"],
                                        					"rendererName": config_copy["rendererName"],
-                                       					"vals": config_copy["vals"]
+                                       					"vals": config_copy["vals"].join('#')
                                					};
                        					},
                        					autoSortUnusedAttrs: true,
@@ -249,12 +248,12 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
             		},
 			onRefresh: function(config) {
                     		var config_copy = JSON.parse(JSON.stringify(config));
-                    		currConfig = {
-					"rows": config_copy["rows"],
-					"cols": config_copy["cols"],
+				currConfig = {
+					"rows": config_copy["rows"].join("#"),
+					"cols": config_copy["cols"].join("#"),
 					"aggregatorName": config_copy["aggregatorName"],
 					"rendererName": config_copy["rendererName"],
-					"vals": config_copy["vals"]
+					"vals": config_copy["vals"].join("#")
 				};
 			},
 	    		autoSortUnusedAttrs: true,
