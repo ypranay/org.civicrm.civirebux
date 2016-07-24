@@ -1,3 +1,4 @@
+{* FTUE Info text *}
 <div id="banner">
 <strong>CiviREBUX</strong> is similar to the modern presentation softwares, yet different! Built using Pivottable.js, <strong>CiviREBUX</strong> comes equipped with a drag-n-drop interface which also supports multiple data transformation functionalities like pivoting, filtering, sorting et cetera. <a href="#" class="show">Expand</a> to discover its many use-cases!
 <div id="hidden-banner">
@@ -25,6 +26,8 @@ You can also change the order in which the attributes appear in the report by dr
 </div>
 </div>
 <br>
+
+{* For choosing amongst Membership and Contribution data *}
 <form id="whichDataType" method="post">
 Select which CiviCRM data do you want to use? (<em>default: Contribution</em>) 
 <select name="CRMData" id="CRMData">
@@ -32,31 +35,50 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </select>
 <input type="submit" value="Go"/>
 </form>
+
 <br>
+
+{* Pivot Table Smarty Template *}
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
+
 <br><br>
+
+{* jQuery Dialog for Saving Report Templates *}
 <div id="saveDialog" style="display:none;">
 <label for="saveReportAs">{ts}Save Report As{/ts}:</label>
 <input id="saveReportAs" size="40">
 </div>
+
+{* jQuery Dialog for Loading saved Report Templates *}
 <div id="loadDialog" style="display:none;">
 <label for="loadDialogList">{ts}Select One of the Saved Reports:{/ts}</label><br>
 <div id="loadDialogList" style="width: 50px;"> </div>
 </div>
+
+{* div containing Pivot table *}
 <div id="results"></div>
 <div id="reportPivotTable"></div>
 {literal}
 <script type="text/javascript">
+	
+	/*
+	* Holds the current report configuration comprising of the rows, columns, renderer name, aggregator name and value of the pivot table.
+	* Updated everytime onRefresh function is triggered, i.e. on any change in the pivot table viz. rows or col dragged into/out et cetera.
+	* Default options for pivot table are set here.
+	*/ 
 	var currConfig={};
-
 	currConfig['vals'] = "Total";
 	currConfig['rows'] = getRows();
 	currConfig['cols'] = "";
 	currConfig['rendererName'] = "Table";
 	currConfig['aggregatorName'] = "Count";	
 
+	/*
+	* Returns string-formatted current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' style. Used for giving default names to report configurations while saving.
+	* @param: void  
+	*/
 	function getTimeStamp() {
   		var now = new Date();
   		var currdate = [ now.getFullYear(), now.getMonth()+1, now.getDate()];
@@ -72,8 +94,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
   		return currdate.join("-") + " " + time.join(":") + suffix;
 	}
 
+	// CiviCRM-style URL for directing Ajax calls while saving report configurations. Please refer to xml/Menu/civirebux.xml for more.
 	var crmAjaxURL = CRM.url('civicrm/civirebux/ajax/save');
 	
+	// Trigger function on save button click
 	cj("#save").click( function(){
 		var currTimeStamp = getTimeStamp();
 		cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
@@ -106,16 +130,20 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			}
 		})});
 
+	// CiviCRM-style URL for directing Ajax calls to get a list of all saved configuration to output to user for selection while loading
 	var crmLoadAllAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');	
+
+	// CiviCRM-style URL for directing Ajax calls to get a particular report configuration (uniquely id'ed by the `id` field) 
 	var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/load');
 
+	// Trigger function on load button click
 	cj("#load").click( function(){
                 cj("#loadDialog").dialog({
 			width: 400,
 			modal: true,
                         dialogClass: "no-close",
                         title: "Load Report",
-                        open: function() {
+                        open: function(){
 				jQuery.ajax({
                                 	type: "POST",
                                         url: crmLoadAllAjaxURL
@@ -138,7 +166,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 url: crmLoadAjaxURL,
                                                 data: 'id='+sel,
                                         }).done(function (data){
-                                                cj("#loadDialog").dialog("close");
+                                  		// Loads the pivotUI with obtained configuration from the Ajax call
+				              	cj("#loadDialog").dialog("close");
 						var reportData = {/literal}{$pivotData}{literal};
                 				var derivers = jQuery.pivotUtilities.derivers;
                 				var sortAs = jQuery.pivotUtilities.sortAs;
@@ -174,7 +203,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					},
                        					autoSortUnusedAttrs: true,
                        					unusedAttrsVertical: false
-               					}, true);								
+               					}, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         }).fail(function (data){
                                         	cj("#loadDialog").dialog("close");
@@ -188,6 +217,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         }
                 })});	
 
+	/*
+	* Returns default rows depending on the choice of report - Contribution or Membership
+	* @param: void
+	* @return: Array of row field names
+	*/
 	function getRows(){
 		var e = document.getElementById("CRMData");
 		var datatype = e.options[e.selectedIndex].value;
@@ -200,6 +234,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		return rows;
 	}
 
+	/*
+	* Returns newly added derived attributes depending on the choice of report - Contribution or Membership
+	* @param: an object corresponding to $,pivotUtilities.derivers
+	* @return: dictionary of functions   
+	*/
 	function getDerivedAttributes(derivers){
                 var e = document.getElementById("CRMData");
                 var datatype = e.options[e.selectedIndex].value;
@@ -226,6 +265,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
         	var data = {/literal}{$pivotData}{literal};
         	var derivers = jQuery.pivotUtilities.derivers;
 		var sortAs = jQuery.pivotUtilities.sortAs;
+	
+		/*
+		* Loading the pivotUI for the div containing the pivot table. Set the override parameter for pivotUI to `true` to allow 
+		* overriding of report configurations. Originally set to `false`.
+		*/
 		jQuery("#reportPivotTable").pivotUI(data, {
             		rendererName: "Table",
             		renderers: CRM.$.extend(
@@ -247,6 +291,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 		}
             		},
 			onRefresh: function(config) {
+				/*
+				* @param config handles comma-containing attribute names well. Rather than passing the 'rows','cols','vals' as Array 
+				* objects, join them with a custom delimiter (in this case, #) and pass them as string. While loading, split them again using 
+				* this custom delimiter and it works well. 
+				*/
                     		var config_copy = JSON.parse(JSON.stringify(config));
 				currConfig = {
 					"rows": config_copy["rows"].join("#"),
