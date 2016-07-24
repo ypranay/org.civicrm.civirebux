@@ -49,7 +49,13 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 {literal}
 <script type="text/javascript">
 	var currConfig={};
-	
+
+	currConfig['vals'] = "Total";
+	currConfig['rows'] = getRows();
+	currConfig['cols'] = "";
+	currConfig['rendererName'] = "Table";
+	currConfig['aggregatorName'] = "Count";	
+
 	function getTimeStamp() {
   		var now = new Date();
   		var date = [ now.getDate() , now.getMonth()+1 , now.getFullYear() ];
@@ -131,16 +137,53 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 url: crmLoadAjaxURL,
                                                 data: 'id='+sel,
                                         }).done(function (data){
-						// data is working fine!!
                                                 cj("#loadDialog").dialog("close");
+						var reportData = {/literal}{$pivotData}{literal};
+                				var derivers = jQuery.pivotUtilities.derivers;
+                				var sortAs = jQuery.pivotUtilities.sortAs;
+						jQuery("#reportPivotTable").pivotUI(reportData, {
+                        				rendererName: data['renderer'],
+                       					renderers: CRM.$.extend(
+                                				jQuery.pivotUtilities.renderers,
+                                				jQuery.pivotUtilities.c3_renderers,
+                                				jQuery.pivotUtilities.export_renderers
+                        				),
+                        				vals: data['vals'].split(','),
+                        				rows: data['rows'].split(','),
+                        				cols: data['cols'].split(','),
+                       					aggregatorName: data['aggregator'],
+                        				derivedAttributes: getDerivedAttributes(derivers),
+                        				sorters: function(attr) {
+                               					if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
+                                       					return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+                               					}
+                               					if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") {
+                                       					return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
+                               					}
+                       					},
+                       					onRefresh: function(config) {
+                               					var config_copy = JSON.parse(JSON.stringify(config));
+                               					currConfig = {
+                                       					"rows": config_copy["rows"],
+                                       					"cols": config_copy["cols"],
+                                       					"aggregatorName": config_copy["aggregatorName"],
+                                       					"rendererName": config_copy["rendererName"],
+                                       					"vals": config_copy["vals"]
+                               					};
+                       					},
+                       					autoSortUnusedAttrs: true,
+                       					unusedAttrsVertical: false
+               					}, true);								
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         }).fail(function (data){
                                                 CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
+						cj("#loadDialog").dialog("destroy");
                                         });
 					return;
                                 },
                                 "Cancel": function(){
 					cj("#loadDialog").dialog("close");
+					cj("#loadDialog").dialog("destroy");
                                         CRM.alert(ts('Configuration was not loaded!!'),'CiviREBUX: Alert','alert',{'expires':1500});
                                         return;
                                 }
@@ -180,7 +223,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 }
                 return dict_functions;
         }
-
+	
 	CRM.$(function () {
         	var data = {/literal}{$pivotData}{literal};
         	var derivers = jQuery.pivotUtilities.derivers;
@@ -217,7 +260,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			},
 	    		autoSortUnusedAttrs: true,
            		unusedAttrsVertical: false
-        	}, false);
+        	}, true);
     	});
 </script>
 {/literal}
