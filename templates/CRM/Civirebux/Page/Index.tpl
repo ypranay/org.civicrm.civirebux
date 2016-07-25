@@ -125,7 +125,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				},
 				"Cancel": function(){
 					cj("#saveDialog").dialog("close");
-					CRM.alert(ts('Configuration was not saved!!'),'CiviREBUX: Alert','alert',{'expires':1500});
 				}
 			}
 		})});
@@ -212,7 +211,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                 },
                                 "Cancel": function(){
 					cj("#loadDialog").dialog("close");
-                                        CRM.alert(ts('Configuration was not loaded!!'),'CiviREBUX: Alert','alert',{'expires':1500});
                                 }
                         }
                 })});	
