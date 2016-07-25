@@ -34,10 +34,10 @@
 	vertical-align: top;
 }
 
-#save, #load {
+#save, #load, #listOfSavedReports {
 	float: right;
 	display: inline;
-	width: 7%;
+	width: auto;
 	padding: 5px;
 }
 

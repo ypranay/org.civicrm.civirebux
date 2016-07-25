@@ -42,7 +42,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
-
+<input type="button" value="Saved Reports" id="listOfSavedReports" />
 <br><br>
 
 {* jQuery Dialog for Saving Report Templates *}
