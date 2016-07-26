@@ -210,6 +210,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					unusedAttrsVertical: false
                					}, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
+						if(cj("#goback").is(':visible')){
+							cj("#goback").hide();
+						}
                                         }).fail(function (data){
                                         	cj("#loadDialog").dialog("close");
 					        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
