@@ -28,6 +28,13 @@
     <access_arguments>access CiviCRM Civirebux</access_arguments>
   </item>
 
+ <item>
+    <path>civicrm/civirebux/ajax/addtonavigation</path>
+    <page_callback>CRM_Civirebux_BAO_Report::addToNavigation</page_callback>
+    <title>Index</title>
+    <access_arguments>access CiviCRM Civirebux</access_arguments>
+  </item>
+
 </menu>
 
 

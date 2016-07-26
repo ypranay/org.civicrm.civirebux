@@ -44,6 +44,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <input type="button" value="Load" id="load" />
 <input type="button" value="Saved Reports" id="listOfSavedReports" />
 <input type="button" value="< Back" id="goback" style="display:none;"/>
+<input type="button" value="Add to Navigation" id="addToNav" />
 <br><br>
 
 {* jQuery Dialog for Saving Report Templates *}
@@ -56,6 +57,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <div id="loadDialog" style="display:none;">
 <label for="loadDialogList">{ts}Select One of the Saved Reports:{/ts}</label><br>
 <div id="loadDialogList" style="width: 50px;"> </div>
+</div>
+
+<div id="addToNavDialog" style="display:none;">
+<label for="addToNavSaveReportAs">{ts}Save Report As{/ts}:</label>
+<input id="addToNavSaveReportAs" size="40">
 </div>
 
 {* div containing Pivot table *}
@@ -135,6 +141,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 
 	// CiviCRM-style URL for directing Ajax calls to get a particular report configuration (uniquely id'ed by the `id` field) 
 	var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/load');
+		
+	var crmAddToNavAjaxURL = CRM.url("civicrm/civirebux/ajax/addtonavigation");
 
 	// Trigger function on load button click
 	cj("#load").click( function(){
@@ -234,6 +242,36 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                     	CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
               	})});
 
+	cj("#addToNav").click( function(){
+		var currTimeStamp = getTimeStamp();
+                cj("#addToNavSaveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
+                cj("#addToNavDialog").dialog({
+                        width: 400,
+                        modal: true,
+                        dialogClass: "no-close",
+                        title: "Add Report To Navigation",
+                        buttons: {
+                                "OK": function(){
+                                        var name = cj("#addToNavSaveReportAs").val();
+                                        if(name == ''){
+                                                name = "CiviREBUX Report "+currTimeStamp;
+                                        }
+                                        jQuery.ajax({
+                                                type: "POST",
+                                                url: crmAddToNavAjaxURL,
+                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp
+                                        }).done(function (data){
+                                                cj("#addToNavDialog").dialog("close");
+                                                CRM.alert(ts('Added To Navigation Menu!!'),'CiviREBUX: Success','success',{'expires':3000});
+                                        }).fail(function (data){
+                                                CRM.alert(ts('Error Adding To Navigation Menu!!'),'CiviREBUX: Error','error',{'expires':3000});
+                                        });
+                                },
+                                "Cancel": function(){
+                                        cj("#addToNavDialog").dialog("close");
+                                }
+                        }
+                })});
 	
 	cj("#goback").click( function() {
 		 cj("#goback").hide();

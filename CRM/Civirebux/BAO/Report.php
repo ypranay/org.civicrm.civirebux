@@ -61,4 +61,47 @@ class CRM_Civirebux_BAO_Report{
                 }
                 CRM_Utils_JSON::output($config);
         }
+	
+	public static function addToNavigation(){
+                $renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : '';
+                $aggregator = isset($_REQUEST['aggregator']) ? CRM_Utils_Type::escape($_REQUEST['aggregator'], 'String') : '';
+                $vals = isset($_REQUEST['vals']) ? CRM_Utils_Type::escape($_REQUEST['vals'], 'String') : '';
+                $rows = isset($_REQUEST['rows']) ? CRM_Utils_Type::escape($_REQUEST['rows'], 'String') : '';
+                $cols = isset($_REQUEST['cols']) ? CRM_Utils_Type::escape($_REQUEST['cols'], 'String') : '';
+                $name = isset($_REQUEST['name']) ? CRM_Utils_Type::escape($_REQUEST['name'], 'String') : '';
+                $time = isset($_REQUEST['time']) ? CRM_Utils_Type::escape($_REQUEST['time'], 'String') : '';
+        
+		$ret = array();
+                $ret['renderer'] = $renderer;
+                $ret['aggregator'] = $aggregator;
+                $ret['vals'] = $vals;
+                $ret['rows'] = $rows;
+                $ret['cols'] = $cols;
+                $ret['name'] = $name;
+                $ret['time'] = $time;
+
+	        $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`)
+                VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."')";
+		CRM_Core_DAO::executeQuery($sql);
+    		
+		$reportsNavId = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_Navigation', 'CiviREBUX', 'id', 'name');
+
+		$params = array (
+        		'domain_id'  => CRM_Core_Config::domainID(),
+     		   	'label'      => $name,
+        		'name'       => 'saved template time='.$time,
+        		'url'        => 'civicrm/civirebux', //yet to be changed
+        		'parent_id'  => $reportsNavId,
+        		'weight'     => 0,
+        		'permission' => 'access CiviCRM Civirebux',
+        		'separator'  => 1,
+        		'is_active'  => 1
+    		);
+		
+		$navigation = new CRM_Core_DAO_Navigation();
+    		$navigation->copyValues($params);
+    		$navigation->save();
+    		CRM_Core_BAO_Navigation::resetNavigation();
+    		return TRUE;	
+        }	
 }
