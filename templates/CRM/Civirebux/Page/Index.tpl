@@ -43,6 +43,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
 <input type="button" value="Saved Reports" id="listOfSavedReports" />
+<input type="button" value="< Back" id="goback" style="display:none;"/>
 <br><br>
 
 {* jQuery Dialog for Saving Report Templates *}
@@ -69,9 +70,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	* Default options for pivot table are set here.
 	*/ 
 	var currConfig={};
-	currConfig['vals'] = "Total";
+	currConfig['vals'] = [];
 	currConfig['rows'] = getRows();
-	currConfig['cols'] = "";
+	currConfig['cols'] = [];
 	currConfig['rendererName'] = "Table";
 	currConfig['aggregatorName'] = "Count";	
 
@@ -115,7 +116,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					jQuery.ajax({
 						type: "POST",
 						url: crmAjaxURL,
-						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols'],
+						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp,
 					}).done(function (data){
 						cj("#saveDialog").dialog("close");
 						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -170,6 +171,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 						var reportData = {/literal}{$pivotData}{literal};
                 				var derivers = jQuery.pivotUtilities.derivers;
                 				var sortAs = jQuery.pivotUtilities.sortAs;
+						currConfig['vals'] = data['vals'];
+                                                currConfig['rows'] = data['rows'];
+                                                currConfig['cols'] = data['cols'];
+                                                currConfig['aggregator'] = data['aggregator'];
+					 	currConfig['renderer'] = data['renderer'];
 						jQuery("#reportPivotTable").pivotUI(reportData, {
                         				rendererName: data['renderer'],
                        					renderers: CRM.$.extend(
@@ -214,6 +220,61 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                 }
                         }
                 })});	
+
+	cj("#listOfSavedReports").click( function(){
+        	jQuery.ajax({
+                	type: "POST",
+                 	url: crmLoadAllAjaxURL
+           	}).done(function (data){
+                        jQuery("#reportPivotTable").pivot(data, {
+                        	rows: ['id','name','rows','cols','vals','renderer','aggregator','time']
+                        });
+			cj("#goback").show();
+                }).fail(function (data){
+                    	CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
+              	})});
+
+	
+	cj("#goback").click( function() {
+		 cj("#goback").hide();
+		 var reportData = {/literal}{$pivotData}{literal};
+                 var derivers = jQuery.pivotUtilities.derivers;
+             	 var sortAs = jQuery.pivotUtilities.sortAs;
+                 jQuery("#reportPivotTable").pivotUI(reportData, {
+                 	rendererName:	currConfig['renderer'],
+                        renderers: CRM.$.extend(
+                        	jQuery.pivotUtilities.renderers,
+                             	jQuery.pivotUtilities.c3_renderers,
+                                jQuery.pivotUtilities.export_renderers
+                        ),
+                       	vals: currConfig['vals'].split('#'),
+                        rows: currConfig['rows'].split('#'),
+                        cols: currConfig['cols'].split('#'),
+                       	aggregatorName: currConfig['aggregator'],
+                      	derivedAttributes: getDerivedAttributes(derivers),
+                        sorters: function(attr) {
+                        	if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
+                              		return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+                                }
+                               	if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") { 
+                                     	return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
+                                }
+                        },
+                        onRefresh: function(config) {
+                      		var config_copy = JSON.parse(JSON.stringify(config));
+                                currConfig = {
+                             		"rows": config_copy["rows"].join('#'),
+                                  	"cols": config_copy["cols"].join('#'),
+                                        "aggregatorName": config_copy["aggregatorName"],
+                                        "rendererName": config_copy["rendererName"],
+                                      	"vals": config_copy["vals"].join('#')
+                     		};
+                      	},
+                        autoSortUnusedAttrs: true,
+                        unusedAttrsVertical: false
+                 }, true);	
+	});
+
 
 	/*
 	* Returns default rows depending on the choice of report - Contribution or Membership
@@ -275,7 +336,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				jQuery.pivotUtilities.c3_renderers,
                 		jQuery.pivotUtilities.export_renderers
             		),
-            		vals: ["Total"],
+            		vals: [],
             		rows: getRows(),
             		cols: [],
             		aggregatorName: "Count",
