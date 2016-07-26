@@ -262,6 +262,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp
                                         }).done(function (data){
                                                 cj("#addToNavDialog").dialog("close");
+						document.location = CRM.url('civicrm/civirebux', {reset: 1});
                                                 CRM.alert(ts('Added To Navigation Menu!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         }).fail(function (data){
                                                 CRM.alert(ts('Error Adding To Navigation Menu!!'),'CiviREBUX: Error','error',{'expires':3000});

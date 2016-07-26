@@ -71,15 +71,6 @@ class CRM_Civirebux_BAO_Report{
                 $name = isset($_REQUEST['name']) ? CRM_Utils_Type::escape($_REQUEST['name'], 'String') : '';
                 $time = isset($_REQUEST['time']) ? CRM_Utils_Type::escape($_REQUEST['time'], 'String') : '';
         
-		$ret = array();
-                $ret['renderer'] = $renderer;
-                $ret['aggregator'] = $aggregator;
-                $ret['vals'] = $vals;
-                $ret['rows'] = $rows;
-                $ret['cols'] = $cols;
-                $ret['name'] = $name;
-                $ret['time'] = $time;
-
 	        $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`)
                 VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."')";
 		CRM_Core_DAO::executeQuery($sql);
