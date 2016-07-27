@@ -128,8 +128,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 						cj("#saveDialog").dialog("close");
 						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
 						var title = cj("#title").text();
-						title += " | "+name;
-						cj("#title").html(title);
+						cj("#title").html(title.split(' | ')[0]+" | "+name);
+						currConfig['name'] = name;
 					}).fail(function (data){
 						CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
 					});
@@ -221,10 +221,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					unusedAttrsVertical: false
                					}, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
-						var title = cj("#title").text();
-                                                title += " | "+data['name'];
-                                                cj("#title").html(title);
-                                        }).fail(function (data){
+                                        	var title = cj("#title").text();
+                        			cj("#title").html(title.split(' | ')[0]+" | "+data['name']);
+					}).fail(function (data){
                                         	cj("#loadDialog").dialog("close");
 					        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
                                         });
@@ -236,7 +235,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 })});	
 
 	cj("#listOfSavedReports").click( function(){
-        	jQuery.ajax({
+        	cj("#addToNav").hide();
+		jQuery.ajax({
                 	type: "POST",
                  	url: crmLoadAllAjaxURL
            	}).done(function (data){
@@ -317,7 +317,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                       	},
                         autoSortUnusedAttrs: true,
                         unusedAttrsVertical: false
-                 }, true);	
+                 }, true);
+		 var title = cj("#title").text();
+                 cj("#title").html(title.split(' | ')[0]+" | "+currConfig['name']);	 	
 	});
 
 
@@ -406,8 +408,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				unusedAttrsVertical: false
 			}, true);
 			var title = cj("#title").text();
-                        title += " | "+config['name'];
-                        cj("#title").html(title);		
+                        cj("#title").html(title.split(' | ')[0]+" | "+config['name']);		
 		}
 		else{
 			jQuery("#reportPivotTable").pivotUI(data, {
@@ -449,8 +450,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
            			unusedAttrsVertical: false
         		}, true);
 			var title = cj("#title").text();
-                        title += " | New Report";
-                        cj("#title").html(title);
+			cj("#title").html(title.split(' | ')[0]+" | New Report");
     		}
 	});
 </script>
