@@ -39,7 +39,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <br>
 
 {* Pivot Table Smarty Template *}
-<h3>{$CRMDataType} Summary Pivot Table</h3>
+<h3 id="title">{$CRMDataType} Summary Pivot Table</h3>
+
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
 <input type="button" value="View Saved Reports" id="listOfSavedReports" />
@@ -126,6 +127,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					}).done(function (data){
 						cj("#saveDialog").dialog("close");
 						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+						var title = cj("#title").text();
+						title += " | "+name;
+						cj("#title").html(title);
 					}).fail(function (data){
 						CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
 					});
@@ -174,7 +178,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 url: crmLoadAjaxURL,
                                                 data: 'id='+sel,
                                         }).done(function (data){
-                                  		// Loads the pivotUI with obtained configuration from the Ajax call
 				              	cj("#loadDialog").dialog("close");
 						var reportData = {/literal}{$pivotData}{literal};
                 				var derivers = jQuery.pivotUtilities.derivers;
@@ -218,6 +221,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					unusedAttrsVertical: false
                					}, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
+						var title = cj("#title").text();
+                                                title += " | "+data['name'];
+                                                cj("#title").html(title);
                                         }).fail(function (data){
                                         	cj("#loadDialog").dialog("close");
 					        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
@@ -366,7 +372,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var sortAs = jQuery.pivotUtilities.sortAs;
 	
 		if(config.length != 0){
-			jQuery("addToNav").hide();
 			jQuery("#reportPivotTable").pivotUI(data, {
 				rendererName: config['renderer'],
 				renderers: CRM.$.extend(
@@ -399,7 +404,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	   			},
 				autoSortUnusedAttrs: true,
 				unusedAttrsVertical: false
-			}, true);		
+			}, true);
+			var title = cj("#title").text();
+                        title += " | "+config['name'];
+                        cj("#title").html(title);		
 		}
 		else{
 			jQuery("#reportPivotTable").pivotUI(data, {
@@ -440,6 +448,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	    			autoSortUnusedAttrs: true,
            			unusedAttrsVertical: false
         		}, true);
+			var title = cj("#title").text();
+                        title += " | New Report";
+                        cj("#title").html(title);
     		}
 	});
 </script>
