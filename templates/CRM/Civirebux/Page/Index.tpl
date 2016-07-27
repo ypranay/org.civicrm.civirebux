@@ -82,7 +82,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	currConfig['cols'] = [];
 	currConfig['rendererName'] = "Table";
 	currConfig['aggregatorName'] = "Count";	
-
+	currConfig['name'] = "New Report";
 	/*
 	* Returns string-formatted current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' style. Used for giving default names to report configurations while saving.
 	* @param: void  
@@ -187,6 +187,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 currConfig['cols'] = data['cols'];
                                                 currConfig['aggregator'] = data['aggregator'];
 					 	currConfig['renderer'] = data['renderer'];
+						currConfig['name'] = data['name'];
 						jQuery("#reportPivotTable").pivotUI(reportData, {
                         				rendererName: data['renderer'],
                        					renderers: CRM.$.extend(
@@ -282,6 +283,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	
 	cj("#goback").click( function() {
 		 cj("#goback").hide();
+		 cj("#addToNav").show();
 		 var reportData = {/literal}{$pivotData}{literal};
                  var derivers = jQuery.pivotUtilities.derivers;
              	 var sortAs = jQuery.pivotUtilities.sortAs;
@@ -318,8 +320,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         autoSortUnusedAttrs: true,
                         unusedAttrsVertical: false
                  }, true);
-		 var title = cj("#title").text();
-                 cj("#title").html(title.split(' | ')[0]+" | "+currConfig['name']);	 	
 	});
 
 
