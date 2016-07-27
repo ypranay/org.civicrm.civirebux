@@ -34,7 +34,7 @@
 	vertical-align: top;
 }
 
-#save, #load, #listOfSavedReports {
+#save, #load, #listOfSavedReports, #addToNav {
 	float: right;
 	display: inline;
 	width: auto;

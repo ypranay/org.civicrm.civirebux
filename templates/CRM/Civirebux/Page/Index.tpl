@@ -42,7 +42,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <h3>{$CRMDataType} Summary Pivot Table</h3>
 <input type="button" value="Save" id="save" />
 <input type="button" value="Load" id="load" />
-<input type="button" value="Saved Reports" id="listOfSavedReports" />
+<input type="button" value="View Saved Reports" id="listOfSavedReports" />
 <input type="button" value="< Back" id="goback" style="display:none;"/>
 <input type="button" value="Add to Navigation" id="addToNav" />
 <br><br>
@@ -262,8 +262,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp
                                         }).done(function (data){
                                                 cj("#addToNavDialog").dialog("close");
-						document.location = CRM.url('civicrm/civirebux', {reset: 1});
-                                                CRM.alert(ts('Added To Navigation Menu!!'),'CiviREBUX: Success','success',{'expires':3000});
+						document.location = CRM.url('civicrm/civirebux/'+data['id']);
+                                                CRM.alert(ts(data['name']+' \n added to Reports >> CiviREBUX in the Navigation Menu!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         }).fail(function (data){
                                                 CRM.alert(ts('Error Adding To Navigation Menu!!'),'CiviREBUX: Error','error',{'expires':3000});
                                         });
@@ -366,6 +366,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var sortAs = jQuery.pivotUtilities.sortAs;
 	
 		if(config.length != 0){
+			jQuery("addToNav").hide();
 			jQuery("#reportPivotTable").pivotUI(data, {
 				rendererName: config['renderer'],
 				renderers: CRM.$.extend(

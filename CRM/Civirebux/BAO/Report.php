@@ -74,7 +74,7 @@ class CRM_Civirebux_BAO_Report{
 	        $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`)
                 VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."')";
 		CRM_Core_DAO::executeQuery($sql);
-    		
+
 		$dao = CRM_Core_DAO::executeQuery('SELECT `id` FROM civicrm_civirebux_configuration WHERE `name`="'.$name.'"');
 		if($dao->fetch()){
 			$id = $dao->id;
@@ -93,11 +93,15 @@ class CRM_Civirebux_BAO_Report{
         		'separator'  => 1,
         		'is_active'  => 1
     		);
-		
+
+		$config = array();
+                $config['name'] = $name;
+                $config['id'] = $id;	
+	
 		$navigation = new CRM_Core_DAO_Navigation();
     		$navigation->copyValues($params);
     		$navigation->save();
     		CRM_Core_BAO_Navigation::resetNavigation();
-    		return TRUE;	
+    		CRM_Utils_JSON::output($config);
         }
 }
