@@ -75,18 +75,18 @@ class CRM_Civirebux_BAO_Report{
                 VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."')";
 		CRM_Core_DAO::executeQuery($sql);
     		
-		$dao = CRM_Core_DAO::executeQuery('SELECT MAX(`id`) FROM civicrm_civirebux_configuration');
+		$dao = CRM_Core_DAO::executeQuery('SELECT `id` FROM civicrm_civirebux_configuration WHERE `name`="'.$name.'"');
 		if($dao->fetch()){
 			$id = $dao->id;
 		}
- 
+		
 		$reportsNavId = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_Navigation', 'CiviREBUX', 'id', 'name');
 
 		$params = array (
         		'domain_id'  => CRM_Core_Config::domainID(),
      		   	'label'      => $name,
-        		'name'       => 'Report ID='.$id,
-        		'url'        => 'civicrm/civirebux/loadFromNavMenu/'.$id,
+        		'name'       => 'Report ID = '.$id,
+        		'url'        => 'civicrm/civirebux/'.$id,
         		'parent_id'  => $reportsNavId,
         		'weight'     => 0,
         		'permission' => 'access CiviCRM Civirebux',
@@ -100,32 +100,4 @@ class CRM_Civirebux_BAO_Report{
     		CRM_Core_BAO_Navigation::resetNavigation();
     		return TRUE;	
         }
-
-	public static function loadFromNavMenu(){
-		$config = CRM_Core_Config::singleton();
-    		$arg = explode('/', $_GET[$config->userFrameworkURLVar]);
-    		$reportId = 0;
-		if ($arg[1] == 'report' && CRM_Utils_Array::value(2, $arg) == 'instance') {
-      			if (CRM_Utils_Rule::positiveInteger($arg[3])) {
-        			$reportId = $arg[3];
-      			}
-    		}
-		CRM_Core_Error::debug_var('id=',$reportId);
-		$sql = "SELECT * FROM civicrm_civirebux_configuration WHERE id=".$reportId;
-                $dao = CRM_Core_DAO::executeQuery($sql);
-                $config = array();
-                while($dao->fetch()){
-                        $config['renderer'] = $dao->renderer;
-                        $config['aggregator'] = $dao->aggregator;
-                        $config['vals'] = $dao->vals;
-                        $config['rows'] = $dao->rows;
-                        $config['cols'] = $dao->cols;
-                        $config['name'] = $dao->name;
-                        $config['time'] = $dao->time;
-                        $config['id'] = $dao->id;
-                }
-
-		// Think how to trigger loading reports from the nav menu
-                CRM_Utils_JSON::output($config);		
-        }	
 }

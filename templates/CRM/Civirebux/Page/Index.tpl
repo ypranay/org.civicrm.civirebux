@@ -361,51 +361,85 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	
 	CRM.$(function () {
         	var data = {/literal}{$pivotData}{literal};
+		var config = {/literal}{$report_config}{literal};
         	var derivers = jQuery.pivotUtilities.derivers;
 		var sortAs = jQuery.pivotUtilities.sortAs;
 	
-		/*
-		* Loading the pivotUI for the div containing the pivot table. Set the override parameter for pivotUI to `true` to allow 
-		* overriding of report configurations. Originally set to `false`.
-		*/
-		jQuery("#reportPivotTable").pivotUI(data, {
-            		rendererName: "Table",
-            		renderers: CRM.$.extend(
-                		jQuery.pivotUtilities.renderers, 
-				jQuery.pivotUtilities.c3_renderers,
-                		jQuery.pivotUtilities.export_renderers
-            		),
-            		vals: [],
-            		rows: getRows(),
-            		cols: [],
-            		aggregatorName: "Count",
-	    		derivedAttributes: getDerivedAttributes(derivers),
-	    		sorters: function(attr) {
-                		if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
-                        		return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
-                		}
-                		if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") {
-                        		return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
-                		}
-            		},
-			onRefresh: function(config) {
+		if(config.length != 0){
+			jQuery("#reportPivotTable").pivotUI(data, {
+				rendererName: config['renderer'],
+				renderers: CRM.$.extend(
+					jQuery.pivotUtilities.renderers,
+					jQuery.pivotUtilities.c3_renderers,
+					jQuery.pivotUtilities.export_renderers
+				),
+				vals: config['vals'].split('#'),
+				rows: config['rows'].split('#'),
+				cols: config['cols'].split('#'),
+				aggregatorName: config['aggregator'],
+				derivedAttributes: getDerivedAttributes(derivers),
+				sorters: function(attr) {
+					if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
+						return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+					}
+					if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") {
+						return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
+					}
+				},
+				onRefresh: function(config) {
+		   			var config_copy = JSON.parse(JSON.stringify(config));
+		   			currConfig = {
+			   			"rows": config_copy["rows"].join("#"),
+			   			"cols": config_copy["cols"].join("#"),
+			   			"aggregatorName": config_copy["aggregatorName"],
+			   			"rendererName": config_copy["rendererName"],
+			   			"vals": config_copy["vals"].join("#")
+		   			};
+	   			},
+				autoSortUnusedAttrs: true,
+				unusedAttrsVertical: false
+			}, true);		
+		}
+		else{
+			jQuery("#reportPivotTable").pivotUI(data, {
+            			rendererName: "Table",
+            			renderers: CRM.$.extend(
+                			jQuery.pivotUtilities.renderers, 
+					jQuery.pivotUtilities.c3_renderers,
+                			jQuery.pivotUtilities.export_renderers
+            			),
+            			vals: [],
+            			rows: getRows(),
+            			cols: [],
+            			aggregatorName: "Count",
+	    			derivedAttributes: getDerivedAttributes(derivers),
+	    			sorters: function(attr) {
+                			if(attr == "Month-wise Receipts" || attr == "Month-wise New Members") {
+                        			return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+                			}
+                			if(attr == "Day-wise Receipts" || attr == "Day-wise New Members") {
+                        			return sortAs(["Mon","Tue","Wed", "Thu","Fri","Sat","Sun"]);
+                			}
+            			},
+				onRefresh: function(config) {
 				/*
 				* @param config handles comma-containing attribute names well. Rather than passing the 'rows','cols','vals' as Array 
 				* objects, join them with a custom delimiter (in this case, #) and pass them as string. While loading, split them again using 
 				* this custom delimiter and it works well. 
 				*/
-                    		var config_copy = JSON.parse(JSON.stringify(config));
-				currConfig = {
-					"rows": config_copy["rows"].join("#"),
-					"cols": config_copy["cols"].join("#"),
-					"aggregatorName": config_copy["aggregatorName"],
-					"rendererName": config_copy["rendererName"],
-					"vals": config_copy["vals"].join("#")
-				};
-			},
-	    		autoSortUnusedAttrs: true,
-           		unusedAttrsVertical: false
-        	}, true);
-    	});
+                    			var config_copy = JSON.parse(JSON.stringify(config));
+					currConfig = {
+						"rows": config_copy["rows"].join("#"),
+						"cols": config_copy["cols"].join("#"),
+						"aggregatorName": config_copy["aggregatorName"],
+						"rendererName": config_copy["rendererName"],
+						"vals": config_copy["vals"].join("#")
+					};
+				},
+	    			autoSortUnusedAttrs: true,
+           			unusedAttrsVertical: false
+        		}, true);
+    		}
+	});
 </script>
 {/literal}

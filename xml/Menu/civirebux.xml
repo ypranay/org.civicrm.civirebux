@@ -35,13 +35,6 @@
     <access_arguments>access CiviCRM Civirebux</access_arguments>
   </item>
 
- <item>
-    <path>civicrm/civirebux/loadFromNavMenu</path>
-    <page_callback>CRM_Civirebux_BAO_Report::loadFromNavMenu</page_callback>
-    <title>Index</title>
-    <access_arguments>access CiviCRM Civirebux</access_arguments>
-  </item>
-
 </menu>
 
 
