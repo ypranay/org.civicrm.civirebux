@@ -129,7 +129,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId=0',
 					}).done(function (data){
 						cj("#saveDialog").dialog("close");
-						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+						CRM.alert(ts('Report Template Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
 						var title = cj("#title").text();
 						cj("#title").html(title.split(' | ')[0]+" | "+name);
 						currConfig['name'] = name;
@@ -147,7 +147,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			var currTimeStamp = getTimeStamp();
                 	cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
 			cj("#saveReportAsLabel").html("Overwrite Report As: ");
-			alert(currConfig['id']);
                 	cj("#saveDialog").dialog({
                         width: 400,
                         modal: true,
@@ -165,7 +164,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId='+currConfig['id'],
                                         }).done(function (data){
                                                 cj("#saveDialog").dialog("close");
-                                                CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+                                                CRM.alert(ts('Report Template Updated!!'),'CiviREBUX: Success','success',{'expires':3000});
                                                 var title = cj("#title").text();
                                                 cj("#title").html(title.split(' | ')[0]+" | "+name);
                                                 currConfig['name'] = name;
@@ -231,7 +230,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					 	currConfig['renderer'] = data['renderer'];
 						currConfig['name'] = data['name'];
 						currConfig['id'] = data['id'];
-						alert(currConfig['id']);
 						jQuery("#reportPivotTable").pivotUI(reportData, {
                         				rendererName: data['renderer'],
                        					renderers: CRM.$.extend(
@@ -263,7 +261,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					autoSortUnusedAttrs: true,
                        					unusedAttrsVertical: false
                					}, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
-                                                CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
+                                                CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         	var title = cj("#title").text();
                         			cj("#title").html(title.split(' | ')[0]+" | "+data['name']);
 						cj("#save").val("Save");
