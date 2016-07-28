@@ -41,7 +41,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 {* Pivot Table Smarty Template *}
 <h3 id="title">{$CRMDataType} Summary Pivot Table</h3>
 
-<input type="button" value="Save" id="save" />
+<input type="button" value="Save New" id="save" />
 <input type="button" value="Load" id="load" />
 <input type="button" value="View Saved Reports" id="listOfSavedReports" />
 <input type="button" value="< Back" id="goback" style="display:none;"/>
@@ -50,7 +50,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 
 {* jQuery Dialog for Saving Report Templates *}
 <div id="saveDialog" style="display:none;">
-<label for="saveReportAs">{ts}Save Report As{/ts}:</label>
+<label id="saveReportAsLabel">{ts}Save Report As{/ts}:</label>
 <input id="saveReportAs" size="40">
 </div>
 
@@ -83,6 +83,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	currConfig['rendererName'] = "Table";
 	currConfig['aggregatorName'] = "Count";	
 	currConfig['name'] = "New Report";
+	currConfig['id'] = 0;
+
 	/*
 	* Returns string-formatted current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' style. Used for giving default names to report configurations while saving.
 	* @param: void  
@@ -107,6 +109,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	
 	// Trigger function on save button click
 	cj("#save").click( function(){
+		if(cj("#save").val() == "Save New"){
 		var currTimeStamp = getTimeStamp();
 		cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
 		cj("#saveDialog").dialog({
@@ -123,13 +126,14 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					jQuery.ajax({
 						type: "POST",
 						url: crmAjaxURL,
-						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp,
+						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId=0',
 					}).done(function (data){
 						cj("#saveDialog").dialog("close");
 						CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
 						var title = cj("#title").text();
 						cj("#title").html(title.split(' | ')[0]+" | "+name);
 						currConfig['name'] = name;
+						currConfig['id'] = data['id'];
 					}).fail(function (data){
 						CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
 					});
@@ -138,7 +142,45 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					cj("#saveDialog").dialog("close");
 				}
 			}
-		})});
+		})}
+		else if(cj("#save").val() == "Save"){
+			var currTimeStamp = getTimeStamp();
+                	cj("#saveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
+			cj("#saveReportAsLabel").html("Overwrite Report As: ");
+			alert(currConfig['id']);
+                	cj("#saveDialog").dialog({
+                        width: 400,
+                        modal: true,
+                        dialogClass: "no-close",
+                        title: "Overwrite Report",
+                        buttons: {
+                                "OK": function(){
+                                        var name = cj("#saveReportAs").val();
+                                        if(name == ''){
+                                                name = "CiviREBUX Report "+currTimeStamp;
+                                        }
+                                        jQuery.ajax({
+                                                type: "POST",
+                                                url: crmAjaxURL,
+                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId='+currConfig['id'],
+                                        }).done(function (data){
+                                                cj("#saveDialog").dialog("close");
+                                                CRM.alert(ts('Configuration Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
+                                                var title = cj("#title").text();
+                                                cj("#title").html(title.split(' | ')[0]+" | "+name);
+                                                currConfig['name'] = name;
+						currConfig['id'] = data['id'];
+                                        }).fail(function (data){
+                                                CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
+                                        });
+                                },
+                                "Cancel": function(){
+                                        cj("#saveDialog").dialog("close");
+                                }
+                        }	
+			});
+		}
+	});
 
 	// CiviCRM-style URL for directing Ajax calls to get a list of all saved configuration to output to user for selection while loading
 	var crmLoadAllAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');	
@@ -188,6 +230,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 currConfig['aggregator'] = data['aggregator'];
 					 	currConfig['renderer'] = data['renderer'];
 						currConfig['name'] = data['name'];
+						currConfig['id'] = data['id'];
+						alert(currConfig['id']);
 						jQuery("#reportPivotTable").pivotUI(reportData, {
                         				rendererName: data['renderer'],
                        					renderers: CRM.$.extend(
@@ -210,13 +254,11 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                        					},
                        					onRefresh: function(config) {
                                					var config_copy = JSON.parse(JSON.stringify(config));
-                               					currConfig = {
-                                       					"rows": config_copy["rows"].join('#'),
-                                       					"cols": config_copy["cols"].join('#'),
-                                       					"aggregatorName": config_copy["aggregatorName"],
-                                       					"rendererName": config_copy["rendererName"],
-                                       					"vals": config_copy["vals"].join('#')
-                               					};
+                                       				currConfig["rows"] = config_copy["rows"].join('#');
+                                       				currConfig["cols"] = config_copy["cols"].join('#');
+                                       				currConfig["aggregatorName"] = config_copy["aggregatorName"];
+                                       				currConfig["rendererName"] = config_copy["rendererName"];
+                                       				currConfig["vals"] = config_copy["vals"].join('#');
                        					},
                        					autoSortUnusedAttrs: true,
                        					unusedAttrsVertical: false
@@ -224,6 +266,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                                                 CRM.alert(ts('Configuration Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
                                         	var title = cj("#title").text();
                         			cj("#title").html(title.split(' | ')[0]+" | "+data['name']);
+						cj("#save").val("Save");
 					}).fail(function (data){
                                         	cj("#loadDialog").dialog("close");
 					        CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
@@ -309,14 +352,12 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         },
                         onRefresh: function(config) {
                       		var config_copy = JSON.parse(JSON.stringify(config));
-                                currConfig = {
-                             		"rows": config_copy["rows"].join('#'),
-                                  	"cols": config_copy["cols"].join('#'),
-                                        "aggregatorName": config_copy["aggregatorName"],
-                                        "rendererName": config_copy["rendererName"],
-                                      	"vals": config_copy["vals"].join('#')
-                     		};
-                      	},
+                               	currConfig["rows"] = config_copy["rows"].join('#');
+                               	currConfig["cols"] = config_copy["cols"].join('#');
+                             	currConfig["aggregatorName"] = config_copy["aggregatorName"];
+                                currConfig["rendererName"] = config_copy["rendererName"];
+                               	currConfig["vals"] = config_copy["vals"].join('#');
+			},
                         autoSortUnusedAttrs: true,
                         unusedAttrsVertical: false
                  }, true);
@@ -395,20 +436,19 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 					}
 				},
 				onRefresh: function(config) {
-		   			var config_copy = JSON.parse(JSON.stringify(config));
-		   			currConfig = {
-			   			"rows": config_copy["rows"].join("#"),
-			   			"cols": config_copy["cols"].join("#"),
-			   			"aggregatorName": config_copy["aggregatorName"],
-			   			"rendererName": config_copy["rendererName"],
-			   			"vals": config_copy["vals"].join("#")
-		   			};
-	   			},
+	   				var config_copy = JSON.parse(JSON.stringify(config));
+                                        currConfig["rows"] = config_copy["rows"].join('#');
+                                       	currConfig["cols"] = config_copy["cols"].join('#');
+                                       	currConfig["aggregatorName"] = config_copy["aggregatorName"];
+                                       	currConfig["rendererName"] = config_copy["rendererName"];
+                               		currConfig["vals"] = config_copy["vals"].join('#');
+				},
 				autoSortUnusedAttrs: true,
 				unusedAttrsVertical: false
 			}, true);
 			var title = cj("#title").text();
-                        cj("#title").html(title.split(' | ')[0]+" | "+config['name']);		
+                        cj("#title").html(title.split(' | ')[0]+" | "+config['name']);
+			currConfig['id'] = config['id'];		
 		}
 		else{
 			jQuery("#reportPivotTable").pivotUI(data, {
@@ -437,14 +477,12 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 				* objects, join them with a custom delimiter (in this case, #) and pass them as string. While loading, split them again using 
 				* this custom delimiter and it works well. 
 				*/
-                    			var config_copy = JSON.parse(JSON.stringify(config));
-					currConfig = {
-						"rows": config_copy["rows"].join("#"),
-						"cols": config_copy["cols"].join("#"),
-						"aggregatorName": config_copy["aggregatorName"],
-						"rendererName": config_copy["rendererName"],
-						"vals": config_copy["vals"].join("#")
-					};
+ 					var config_copy = JSON.parse(JSON.stringify(config));
+                                	currConfig["rows"] = config_copy["rows"].join('#');
+                                     	currConfig["cols"] = config_copy["cols"].join('#');
+                                      	currConfig["aggregatorName"] = config_copy["aggregatorName"];
+                                        currConfig["rendererName"] = config_copy["rendererName"];
+                                      	currConfig["vals"] = config_copy["vals"].join('#');				
 				},
 	    			autoSortUnusedAttrs: true,
            			unusedAttrsVertical: false
