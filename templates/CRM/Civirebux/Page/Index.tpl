@@ -51,7 +51,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 {* jQuery Dialog for Saving Report Templates *}
 <div id="saveDialog" style="display:none;">
 <label id="saveReportAsLabel">{ts}Save Report As{/ts}:</label>
-<input id="saveReportAs" size="40">
+<input id="saveReportAs" size="40"><br>
+<label for="saveReportDesc">{ts}Add a Description{/ts}:</label>
+<textarea id="saveReportDesc" style="height: 6em; width: 25em;"></textarea>
 </div>
 
 {* jQuery Dialog for Loading saved Report Templates *}
@@ -62,7 +64,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 
 <div id="addToNavDialog" style="display:none;">
 <label for="addToNavSaveReportAs">{ts}Save Report As{/ts}:</label>
-<input id="addToNavSaveReportAs" size="40">
+<input id="addToNavSaveReportAs" size="40"><br>
+<label for="addToNavReportDesc">{ts}Add a Description{/ts}:</label>
+<textarea id="addToNavReportDesc" style="height: 6em; width: 25em;"></textarea>
 </div>
 
 {* div containing Pivot table *}
@@ -120,13 +124,14 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			buttons: {
 				"OK": function(){
 					var name = cj("#saveReportAs").val();
+					var desc = cj("#saveReportDesc").val();
 					if(name == ''){
 						name = "CiviREBUX Report "+currTimeStamp;
 					}
 					jQuery.ajax({
 						type: "POST",
 						url: crmAjaxURL,
-						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId=0',
+						data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&oldId=0',
 					}).done(function (data){
 						cj("#saveDialog").dialog("close");
 						CRM.alert(ts('Report Template Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -155,13 +160,14 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         buttons: {
                                 "OK": function(){
                                         var name = cj("#saveReportAs").val();
-                                        if(name == ''){
+                			var desc = cj("#saveReportDesc").val();   
+		                     	if(name == ''){
                                                 name = "CiviREBUX Report "+currTimeStamp;
                                         }
                                         jQuery.ajax({
                                                 type: "POST",
                                                 url: crmAjaxURL,
-                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&oldId='+currConfig['id'],
+                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&oldId='+currConfig['id'],
                                         }).done(function (data){
                                                 cj("#saveDialog").dialog("close");
                                                 CRM.alert(ts('Report Template Updated!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -283,7 +289,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                  	url: crmLoadAllAjaxURL
            	}).done(function (data){
                         jQuery("#reportPivotTable").pivot(data, {
-                        	rows: ['id','name','rows','cols','vals','renderer','aggregator','time']
+                        	rows: ['id','name','desc','time']
                         });
 			cj("#goback").show();
                 }).fail(function (data){
@@ -300,14 +306,15 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         title: "Add Report To Navigation",
                         buttons: {
                                 "OK": function(){
-                                        var name = cj("#addToNavSaveReportAs").val();
+                                        var desc = cj("#addToNavReportDesc").val();
+					var name = cj("#addToNavSaveReportAs").val();
                                         if(name == ''){
                                                 name = "CiviREBUX Report "+currTimeStamp;
                                         }
                                         jQuery.ajax({
                                                 type: "POST",
                                                 url: crmAddToNavAjaxURL,
-                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp
+                                                data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc
                                         }).done(function (data){
                                                 cj("#addToNavDialog").dialog("close");
 						document.location = CRM.url('civicrm/civirebux/'+data['id']);
@@ -413,6 +420,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var sortAs = jQuery.pivotUtilities.sortAs;
 	
 		if(config.length != 0){
+			cj("#save").val("Save");		
 			jQuery("#reportPivotTable").pivotUI(data, {
 				rendererName: config['renderer'],
 				renderers: CRM.$.extend(
@@ -446,9 +454,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 			}, true);
 			var title = cj("#title").text();
                         cj("#title").html(title.split(' | ')[0]+" | "+config['name']);
-			currConfig['id'] = config['id'];		
+			currConfig['id'] = config['id'];
 		}
 		else{
+			cj("#save").val("Save New");
 			jQuery("#reportPivotTable").pivotUI(data, {
             			rendererName: "Table",
             			renderers: CRM.$.extend(
