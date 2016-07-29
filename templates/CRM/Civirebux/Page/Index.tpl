@@ -1,26 +1,31 @@
 {* FTUE Info text *}
 <div id="banner">
-<strong>CiviREBUX</strong> is similar to the modern presentation softwares, yet different! Built using Pivottable.js, <strong>CiviREBUX</strong> comes equipped with a drag-n-drop interface which also supports multiple data transformation functionalities like pivoting, filtering, sorting et cetera. <a href="#" class="show">Expand</a> to discover its many use-cases!
+<strong>CiviREBUX</strong> is a drag-n-drop report builder interface. It supports multiple data transformation functionalities like pivoting, filtering, sorting, and can display results in a table format as well as various chart displays. <a href="#" class="show">Read more...</a>
 <div id="hidden-banner">
 <ul>
 <li><strong>Adding or Removing Attributes:</strong></li>
-To add an attribute into the pivot table, simply drag and drop the attribute from the pooled list just above the pivot table.
-<br>To remove an attribute from the pivot table, simply drag and drop the attribute out of the table, back into the pooled list. 
+To add an attribute to the pivot table, drag and drop the attribute from the list above the pivot table to either the vertical or horizontal axis.<br>Remove an attribute by dragging it back to the field pool. Shifting how they appear in the listing will alter the order of display.
 <br><br>
 <li><strong>Using Renderers:</strong></li>
-The renderer defines you will actually see. The topmost drop-down contains several options for rendering - table (default), table barchart, heatmaps, scatter plots, export to TSV et cetera. Choose the one which you would like to see in the report.
+The renderer determines how the data will be displayed, and includes options such as a table listing (default), bar chart, heatmaps, scatter plots, and export options.
 <br><br>
 <li><strong>Using Aggregators:</strong></li>
-The aggregators define what will end up in the cells of the pivot table. In a nutshell, aggregators are functions which gets called once per cell in the pivot table. The other drop-down contains the list of aggregators viz. count (default), sum, average, minimum, maximum, sum over sum. 
+The aggregator defines what will be displayed in the cells of the pivot table, and is found at the axis of the horizontal and vertical field list. They are functions which are called once per cell in the table. Options include count (default), sum, average, minimum, maximum, and many others. 
 <br><br>
 <li><strong>Filtering:</strong></li>
-See the tiny down-arrow next to each of the attributes? Click it to see the distinct values of that attribute and select the ones which you want to filter out. Also feel free to type in the search string in the search bar that appears when you click the said down-arrow!
+Click the drop-down arrow to the right of each field to expose filtering options. Use the search bar to locate specific records. 
 <br><br>
 <li><strong>Using Custom Attributes:</strong></li>
-We have added support for a few custom attributes like Month-wise, Date-wise, Day-wise and Year-wise contribution receipts which you can include in your report as well.
+Several custom attributes (fields) have been included and may be used like standard fields when building your report. These include Month-wise, Date-wise, Day-wise, and Year-wise contribution receipts.
 <br><br>
-<li><strong>Ordering:</strong></li>
-You can also change the order in which the attributes appear in the report by dragging and dropping them at desired positions!   
+<li><strong>Saving and Loading Report Templates:</strong></li>
+For a new report template, click on the 'Save New' button which opens a dialog where the report template can be assigned a name and a small description.<br>For loading an already saved report template, simply click on the 'Load' button to select from the list of saved report templates.<br>For overwriting the existing report template, click on 'Save' button and fill up the new name and description in the input fields.
+<br><br>
+<li><strong>Adding Report to Navigation Menu:</strong></li>
+Click on 'Add To Navigation' menu to assign the report template a name and description and finally add it to the Navigation Menu under Reports >> CiviREBUX. This automatically saves the report as well.
+<br><br>
+<li><strong>Viewing Saved Report Templates:</strong></li>
+Click on 'View Saved Reports' to see a list of previously saved report templates. Click on the 'Load' button then to load the one at will.
 </ul>
 <div id="instr"><em>...click elsewhere to automatically minimize...</em></div>
 </div>
