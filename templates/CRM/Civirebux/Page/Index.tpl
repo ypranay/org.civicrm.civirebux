@@ -25,7 +25,7 @@ For a new report template, click on the 'Save New' button which opens a dialog w
 Click on 'Add To Navigation' menu to assign the report template a name and description and finally add it to the Navigation Menu under Reports >> CiviREBUX. This automatically saves the report as well.
 <br><br>
 <li><strong>Viewing Saved Report Templates:</strong></li>
-Click on 'View Saved Reports' to see a list of previously saved report templates. Click on the 'Load' button then to load the one at will.
+Click on 'View Saved Reports' to see a list of previously saved report templates. Click on any row to load that particular report template.
 </ul>
 <div id="instr"><em>...click elsewhere to automatically minimize...</em></div>
 </div>
@@ -304,12 +304,18 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         cj("#SavedReportsDataTable").dataTable({
 				"aaData": dataset,
 				"bDestroy": true,
-				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified Time'}]
-                        });
+				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified Time'}],
+                        	"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					jQuery(nRow).click(function(){
+						document.location = CRM.url('civicrm/civirebux/'+aData[0]);
+					});
+				}
+			});
 			cj("#goback").show();
                 }).fail(function (data){
                     	CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
               	})});
+
 
 	cj("#addToNav").click( function(){
 		var currTimeStamp = getTimeStamp();
@@ -437,6 +443,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		var sortAs = jQuery.pivotUtilities.sortAs;
 	
 		if(config.length != 0){
+			CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});	
 			cj("#save").val("Save");		
 			jQuery("#reportPivotTable").pivotUI(data, {
 				rendererName: config['renderer'],

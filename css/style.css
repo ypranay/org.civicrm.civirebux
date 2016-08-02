@@ -41,6 +41,10 @@
 	padding: 5px;
 }
 
+#SavedReportsDataTable tbody{
+	cursor: pointer;
+}
+
 #goback {
 	width: auto;
 	padding: 5px;
