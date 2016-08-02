@@ -1,5 +1,5 @@
 <?php
-class CRM_Civirebux_Page_Index extends CRM_Core_Page {
+class CRM_Civirebux_Page_Report extends CRM_Core_Page {
   public function run() {
     $url = CRM_Core_Config::singleton();
     $arg = explode('/', $_GET[$url->userFrameworkURLVar]);

@@ -2,7 +2,7 @@
 <menu>
   <item>
     <path>civicrm/civirebux</path>
-    <page_callback>CRM_Civirebux_Page_Index</page_callback>
+    <page_callback>CRM_Civirebux_Page_Report</page_callback>
     <title>Index</title>
     <access_arguments>access CiviCRM Civirebux</access_arguments>
   </item>
