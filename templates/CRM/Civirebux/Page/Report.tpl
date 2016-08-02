@@ -44,7 +44,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <br>
 
 {* Pivot Table Smarty Template *}
-<h3 id="title">{$CRMDataType} Summary Pivot Table</h3>
+<h3 id="title"></h3>
 
 <input type="button" value="Save New" id="save" />
 <input type="button" value="Load" id="load" />
@@ -90,6 +90,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
  * Default options for pivot table are set here.
  */ 
 var currConfig={};
+var e = document.getElementById("CRMData");
+var reportType = e.options[e.selectedIndex].value;
 currConfig['vals'] = [];
 currConfig['rows'] = getRows();
 currConfig['cols'] = [];
@@ -97,6 +99,7 @@ currConfig['rendererName'] = "Table";
 currConfig['aggregatorName'] = "Count";	
 currConfig['name'] = "New Report";
 currConfig['id'] = 0;
+currConfig['type'] = reportType;
 
 /*
  * Returns string-formatted current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' style. Used for giving default names to report configurations while saving.
@@ -140,14 +143,14 @@ cj("#save").click( function(){
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&oldId=0',
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId=0',
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
-            var title = cj("#title").text();
-            cj("#title").html(title.split(' | ')[0]+" | "+name);
+            cj("#title").html(reportType+" Summary Report"+" | "+name);
             currConfig['name'] = name;
             currConfig['id'] = data['id'];
+            currConfig['type'] = reportType;
           }).fail(function (data){
             CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
           });
@@ -177,14 +180,14 @@ cj("#save").click( function(){
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&oldId='+currConfig['id'],
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId='+currConfig['id'],
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Updated!!'),'CiviREBUX: Success','success',{'expires':3000});
-            var title = cj("#title").text();
-            cj("#title").html(title.split(' | ')[0]+" | "+name);
+            cj("#title").html(reportType+" Summary Report"+" | "+name);
             currConfig['name'] = name;
             currConfig['id'] = data['id'];
+            currConfig['type'] = reportType;
           }).fail(function (data){
             CRM.alert(ts('Error Saving!!'),'CiviREBUX: Error','error',{'expires':3000});
           });
@@ -217,7 +220,8 @@ cj("#load").click( function(){
   open: function(){
     jQuery.ajax({
       type: "POST",
-      url: crmLoadAllAjaxURL
+      url: crmLoadAllAjaxURL,
+      data: 'type='+reportType
     }).done(function (data){
       var htmlstring = '<select id="listofreports">'
       for(var i=0; i < data.length; i++){
@@ -248,6 +252,7 @@ cj("#load").click( function(){
         currConfig['renderer'] = data['renderer'];
         currConfig['name'] = data['name'];
         currConfig['id'] = data['id'];
+        currConfig['type'] = data['type'];
         jQuery("#reportPivotTable").pivotUI(reportData, {
           rendererName: data['renderer'],
           renderers: CRM.$.extend(
@@ -275,13 +280,13 @@ cj("#load").click( function(){
             currConfig["aggregatorName"] = config_copy["aggregatorName"];
             currConfig["rendererName"] = config_copy["rendererName"];
             currConfig["vals"] = config_copy["vals"].join('#');
+            currConfig["type"] = reportType;
           },
           autoSortUnusedAttrs: true,
           unusedAttrsVertical: false
         }, true);  // setting the override parameter to `true` to allow overriding of the existing pivotUI configuration	
         CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});
-        var title = cj("#title").text();
-        cj("#title").html(title.split(' | ')[0]+" | "+data['name']);
+        cj("#title").html(reportType+" Summary Report | "+data['name']);
         cj("#save").val("Save");
       }).fail(function (data){
         cj("#loadDialog").dialog("close");
@@ -309,7 +314,7 @@ cj("#listOfSavedReports").click( function(){
       "bJQueryUI" : true,
       "aaData": dataset,
       "bDestroy": true,
-      "aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified'}],
+      "aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Report Type'},{title:'Description'},{title: 'Last Modified'}],
       "fnRowCallback": function (nRow, aData, iDisplayIndex) {
         jQuery(nRow).click(function(){
           document.location = CRM.url('civicrm/civirebux/'+aData[0]);
@@ -340,7 +345,7 @@ cj("#addToNav").click( function(){
       jQuery.ajax({
         type: "POST",
         url: crmAddToNavAjaxURL,
-        data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc
+        data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType
       }).done(function (data){
         cj("#addToNavDialog").dialog("close");
         document.location = CRM.url('civicrm/civirebux/'+data['id']);
@@ -393,6 +398,7 @@ cj("#goback").click( function() {
       currConfig["aggregatorName"] = config_copy["aggregatorName"];
       currConfig["rendererName"] = config_copy["rendererName"];
       currConfig["vals"] = config_copy["vals"].join('#');
+      currConfig["type"] = reportType;
     },
     autoSortUnusedAttrs: true,
     unusedAttrsVertical: false
@@ -449,7 +455,8 @@ CRM.$(function () {
   var config = {/literal}{$report_config}{literal};
   var derivers = jQuery.pivotUtilities.derivers;
   var sortAs = jQuery.pivotUtilities.sortAs;
-
+  var e = document.getElementById("CRMData");
+  var reportType = e.options[e.selectedIndex].value;
   if(config.length != 0){
     CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});	
     cj("#save").val("Save");		
@@ -480,12 +487,12 @@ CRM.$(function () {
         currConfig["aggregatorName"] = config_copy["aggregatorName"];
         currConfig["rendererName"] = config_copy["rendererName"];
         currConfig["vals"] = config_copy["vals"].join('#');
+        currConfig["type"] = reportType;
       },
       autoSortUnusedAttrs: true,
       unusedAttrsVertical: false
     }, true);
-    var title = cj("#title").text();
-    cj("#title").html(title.split(' | ')[0]+" | "+config['name']);
+    cj("#title").html(reportType+" Summary Report | "+config['name']);
     currConfig['id'] = config['id'];
   }
   else{
@@ -522,12 +529,12 @@ CRM.$(function () {
         currConfig["aggregatorName"] = config_copy["aggregatorName"];
         currConfig["rendererName"] = config_copy["rendererName"];
         currConfig["vals"] = config_copy["vals"].join('#');				
+        currConfig["type"] = reportType;
       },
       autoSortUnusedAttrs: true,
       unusedAttrsVertical: false
     }, true);
-    var title = cj("#title").text();
-    cj("#title").html(title.split(' | ')[0]+" | New Report");
+    cj("#title").html(reportType+" Summary Report | New Report");
   }
 });
 </script>
