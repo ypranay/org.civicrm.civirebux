@@ -317,7 +317,12 @@ cj("#listOfSavedReports").click( function(){
       "aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Report Type'},{title:'Description'},{title: 'Last Modified'}],
       "fnRowCallback": function (nRow, aData, iDisplayIndex) {
         jQuery(nRow).click(function(){
-          document.location = CRM.url('civicrm/civirebux/'+aData[0]);
+          if(aData[2] != reportType){
+            CRM.alert('Please select '+aData[2]+' in the above dropdown to load this template!!','CiviREBUX: Select Report Type','info',{'expires':3000});   
+          }
+          else{
+            document.location = CRM.url('civicrm/civirebux/'+aData[0]);
+          }
         });
       }
     });
