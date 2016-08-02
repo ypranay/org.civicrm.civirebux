@@ -75,7 +75,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </div>
 
 <div id="SavedReportsData" style="display:none;">
-<table id="SavedReportsDataTable"></table>
+<table id="SavedReportsDataTable"><caption align="top"><em>click on any row to load that report</em></caption></table>
 </div>
 
 {* div containing Pivot table *}
@@ -299,11 +299,13 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		cj("#load").hide();
 		cj("#save").hide();
 		cj("#SavedReportsData").show();
+		cj("#listOfSavedReports").hide();
 		jQuery.ajax({
                 	type: "POST",
                  	url: crmSavedReportsDataAjaxURL
            	}).done(function (dataset){
                         cj("#SavedReportsDataTable").dataTable({
+				"bJQueryUI" : true,
 				"aaData": dataset,
 				"bDestroy": true,
 				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified'}],
@@ -359,6 +361,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		 cj("#addToNav").show();
 		 cj("#save").show();
 		 cj("#load").show();
+		 cj("#listOfSavedReports").show();
 		 var reportData = {/literal}{$pivotData}{literal};
                  var derivers = jQuery.pivotUtilities.derivers;
              	 var sortAs = jQuery.pivotUtilities.sortAs;
