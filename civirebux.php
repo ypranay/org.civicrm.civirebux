@@ -128,7 +128,7 @@ function civirebux_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * Implementation of hook_civicrm_pageRun
  */
 function civirebux_civicrm_pageRun($page) {
-  if ($page instanceof CRM_Civirebux_Page_Index) {
+  if ($page instanceof CRM_Civirebux_Page_Report) {
     CRM_Core_Resources::singleton()
       ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/jquery-ui-1.9.2.custom.min.js')
       ->addScriptFile('org.civicrm.civirebux', 'js/pivottable/pivot.min.js', CRM_Core_Resources::DEFAULT_WEIGHT, 'page-header')
