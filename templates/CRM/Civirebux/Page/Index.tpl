@@ -296,6 +296,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	cj("#listOfSavedReports").click( function(){
         	cj("#reportPivotTable").hide();
 		cj("#addToNav").hide();
+		cj("#load").hide();
+		cj("#save").hide();
 		cj("#SavedReportsData").show();
 		jQuery.ajax({
                 	type: "POST",
@@ -304,7 +306,7 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                         cj("#SavedReportsDataTable").dataTable({
 				"aaData": dataset,
 				"bDestroy": true,
-				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified Time'}],
+				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified'}],
                         	"fnRowCallback": function (nRow, aData, iDisplayIndex) {
 					jQuery(nRow).click(function(){
 						document.location = CRM.url('civicrm/civirebux/'+aData[0]);
@@ -355,6 +357,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		 cj("#SavedReportsData").hide();
 		 cj("#reportPivotTable").show();
 		 cj("#addToNav").show();
+		 cj("#save").show();
+		 cj("#load").show();
 		 var reportData = {/literal}{$pivotData}{literal};
                  var derivers = jQuery.pivotUtilities.derivers;
              	 var sortAs = jQuery.pivotUtilities.sortAs;
