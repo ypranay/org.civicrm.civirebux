@@ -74,6 +74,10 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <textarea id="addToNavReportDesc" style="height: 6em; width: 25em;"></textarea>
 </div>
 
+<div id="SavedReportsData" style="display:none;">
+<table id="SavedReportsDataTable"></table>
+</div>
+
 {* div containing Pivot table *}
 <div id="results"></div>
 <div id="reportPivotTable"></div>
@@ -200,6 +204,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 		
 	var crmAddToNavAjaxURL = CRM.url("civicrm/civirebux/ajax/addtonavigation");
 
+	var crmSavedReportsDataAjaxURL = CRM.url("civicrm/civirebux/ajax/getdataforsavedreports");
+	
 	// Trigger function on load button click
 	cj("#load").click( function(){
                 cj("#loadDialog").dialog({
@@ -288,13 +294,17 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
                 })});	
 
 	cj("#listOfSavedReports").click( function(){
-        	cj("#addToNav").hide();
+        	cj("#reportPivotTable").hide();
+		cj("#addToNav").hide();
+		cj("#SavedReportsData").show();
 		jQuery.ajax({
                 	type: "POST",
-                 	url: crmLoadAllAjaxURL
-           	}).done(function (data){
-                        jQuery("#reportPivotTable").pivot(data, {
-                        	rows: ['id','name','desc','time']
+                 	url: crmSavedReportsDataAjaxURL
+           	}).done(function (dataset){
+                        cj("#SavedReportsDataTable").dataTable({
+				"aaData": dataset,
+				"bDestroy": true,
+				"aoColumns": [{title:'ID'},{title:'Name of the Report'},{title:'Description'},{title: 'Last Modified Time'}]
                         });
 			cj("#goback").show();
                 }).fail(function (data){
@@ -336,6 +346,8 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 	
 	cj("#goback").click( function() {
 		 cj("#goback").hide();
+		 cj("#SavedReportsData").hide();
+		 cj("#reportPivotTable").show();
 		 cj("#addToNav").show();
 		 var reportData = {/literal}{$pivotData}{literal};
                  var derivers = jQuery.pivotUtilities.derivers;
