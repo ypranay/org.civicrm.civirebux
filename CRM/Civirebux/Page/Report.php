@@ -1,6 +1,8 @@
 <?php
 class CRM_Civirebux_Page_Report extends CRM_Core_Page {
   public function run() {
+    
+    // Checking if the URL passed contains a trailing integer signifying the report which is to be loaded. Otherwise empty object is assigned to report_config.
     $url = CRM_Core_Config::singleton();
     $arg = explode('/', $_GET[$url->userFrameworkURLVar]);
     $reportId = 0;

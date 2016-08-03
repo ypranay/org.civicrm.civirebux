@@ -33,9 +33,9 @@ Click on 'View Saved Reports' to see a list of previously saved report templates
 <br>
 
 {* For choosing amongst Membership and Contribution data *}
-  <form id="whichDataType" method="post">
+<form id="whichDataType" method="post">
 Select which CiviCRM data do you want to use? (<em>default: Contribution</em>) 
-  <select name="CRMData" id="CRMData">
+<select name="CRMData" id="CRMData">
 {html_options options=$options_array selected=$CRMDataType}
 </select>
 <input type="submit" value="Go"/>
@@ -85,9 +85,9 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 <script type="text/javascript">
 
 /*
- * Holds the current report configuration comprising of the rows, columns, renderer name, aggregator name and value of the pivot table.
- * Updated everytime onRefresh function is triggered, i.e. on any change in the pivot table viz. rows or col dragged into/out et cetera.
- * Default options for pivot table are set here.
+ * @var currConfig:
+ *  Holds the current report configuration comprising of the rows, columns, renderer name, aggregator name and value of the pivot table.
+ *  Updated everytime onRefresh function is triggered, i.e. on any change in the pivot table configuration. Default options for pivot table are set here.
  */ 
 var currConfig={};
 var e = document.getElementById("CRMData");
@@ -102,8 +102,9 @@ currConfig['id'] = 0;
 currConfig['type'] = reportType;
 
 /*
- * Returns string-formatted current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' style. Used for giving default names to report configurations while saving.
- * @param: void  
+ * Returns current timestamp. Used for giving default names to report configurations while saving.
+ * @function getTimeStamp
+ * @return {String} current timestamp in 'YYYY-MM-DD HH:MM:SS AM/PM' format
  */
 function getTimeStamp() {
   var now = new Date();
@@ -143,7 +144,7 @@ cj("#save").click( function(){
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId=0',
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId=0',   // for new reports, passing oldId = 0
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -180,7 +181,7 @@ cj("#save").click( function(){
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId='+currConfig['id'],
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId='+currConfig['id'],//for already saved reports,oldId=id of saved report
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Updated!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -206,8 +207,10 @@ var crmLoadAllAjaxURL = CRM.url('civicrm/civirebux/ajax/loadAll');
 // CiviCRM-style URL for directing Ajax calls to get a particular report configuration (uniquely id'ed by the `id` field) 
 var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/load');
 
+// CiviCRM-style URL for directing Ajax calls to add a report to navigation menu and save it simultaneously
 var crmAddToNavAjaxURL = CRM.url("civicrm/civirebux/ajax/addtonavigation");
 
+// CiviCRM-style URL for directing Ajax calls to get a list of saved reports - just id, name, type, desc and time fields
 var crmSavedReportsDataAjaxURL = CRM.url("civicrm/civirebux/ajax/getdataforsavedreports");
 
 // Trigger function on load button click
@@ -299,6 +302,7 @@ cj("#load").click( function(){
   }
 })});	
 
+// Trigger on 'View Saved Reports' button click. Hides everything on the page except the 'Back' button. Uses jQuery datatable to display list of saved reports
 cj("#listOfSavedReports").click( function(){
   cj("#reportPivotTable").hide();
   cj("#addToNav").hide();
@@ -331,7 +335,7 @@ cj("#listOfSavedReports").click( function(){
     CRM.alert(ts('Error Loading!!'),'CiviREBUX: Error','error',{'expires':3000});
   })});
 
-
+// Trigger function on 'Add to Navigation' button click
 cj("#addToNav").click( function(){
   var currTimeStamp = getTimeStamp();
   cj("#addToNavSaveReportAs").attr("placeholder","CiviREBUX Report "+currTimeStamp);
@@ -365,6 +369,7 @@ cj("#addToNav").click( function(){
   }
 })});
 
+// Trigger function on 'Back' button click. Loads the configuration from the currConfig object
 cj("#goback").click( function() {
   cj("#goback").hide();
   cj("#SavedReportsData").hide();
@@ -413,8 +418,8 @@ cj("#goback").click( function() {
 
 /*
  * Returns default rows depending on the choice of report - Contribution or Membership
- * @param: void
- * @return: Array of row field names
+ * @function getRows
+ * @return: {Array}   List of row attributes
  */
 function getRows(){
   var e = document.getElementById("CRMData");
@@ -429,9 +434,10 @@ function getRows(){
 }
 
 /*
- * Returns newly added derived attributes depending on the choice of report - Contribution or Membership
- * @param: an object corresponding to $,pivotUtilities.derivers
- * @return: dictionary of functions   
+ * Returns new derived attributes depending on the choice of report - Contribution or Membership
+ * @function getDerivedAttributes
+ * @param {Object}    $.pivotUtilities.derivers object
+ * @return {Object}   Dictionary of derived attributes functions   
  */
 function getDerivedAttributes(derivers){
   var e = document.getElementById("CRMData");
@@ -455,6 +461,9 @@ function getDerivedAttributes(derivers){
   return dict_functions;
 }
 
+/*
+* Checks if the url contains a trailing integer signifying the report which is to be loaded, default new report otherwise.
+*/
 CRM.$(function () {
   var data = {/literal}{$pivotData}{literal};
   var config = {/literal}{$report_config}{literal};
@@ -524,9 +533,9 @@ CRM.$(function () {
       },
       onRefresh: function(config) {
       /*
-       * @param config handles comma-containing attribute names well. Rather than passing the 'rows','cols','vals' as Array 
-       * objects, join them with a custom delimiter (in this case, #) and pass them as string. While loading, split them again using 
-       * this custom delimiter and it works well. 
+       * @param {Object} config     contains current report configuration
+       *
+       * Handles comma-containing attribute names. Rather than passing the 'rows','cols','vals' as array objects, join them with a custom delimiter (in this case, #)          * and pass them as string. While loading, split them again using this custom delimiter. 
        */
         var config_copy = JSON.parse(JSON.stringify(config));
         currConfig["rows"] = config_copy["rows"].join('#');

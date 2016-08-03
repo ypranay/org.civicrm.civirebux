@@ -1,7 +1,13 @@
 <?php 
+/**
+* Class handles all the ajax requests
+*/
 class CRM_Civirebux_BAO_Report{
+  
   /**
-   * Handle AJAX request to save report configuration 
+   * Outputs id of the newly added report template or the older report id, in case of overwriting an already saved report template.
+   * For new reports, oldId=0 is passed and for overwriting, id of the report to be overwritten is passed as oldId
+   * @return array $ret
    */
   public static function save(){
     $renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : '';
@@ -34,6 +40,11 @@ class CRM_Civirebux_BAO_Report{
     CRM_Utils_JSON::output($ret);
   }
 
+  /**
+   * Outputs a JSON object with an array of JSON objects containing all the report configurations from the database.
+   * @function loadAll
+   * @return array $array_configs
+   */
   public static function loadAll(){
     $type = isset($_REQUEST['type']) ? CRM_Utils_Type::escape($_REQUEST['type'], 'String') : '';
     $sql = "SELECT * FROM civicrm_civirebux_configuration WHERE `type`='".$type."'";
@@ -56,6 +67,11 @@ class CRM_Civirebux_BAO_Report{
     CRM_Utils_JSON::output($array_configs);
   }
 
+ /**
+  * Outputs a JSON object with an array containing [id,name,type,desc,time] <- fields from all the report configurations from the database.
+  * @function getDataForSavedReports
+  * @return array $array_configs
+  */
   public static function getDataForSavedReports(){
     $sql = "SELECT `id`, `name`, `type`, `desc`, `time` FROM civicrm_civirebux_configuration";
     $dao = CRM_Core_DAO::executeQuery($sql);
@@ -71,7 +87,12 @@ class CRM_Civirebux_BAO_Report{
     }
     CRM_Utils_JSON::output($array_configs);
   }
-
+  
+  /**
+  * Outputs a JSON object containing the report template which is to be loaded 
+  * @function load
+  * @return array $config
+  */
   public static function load(){
     $id = isset($_REQUEST['id']) ? CRM_Utils_Type::escape($_REQUEST['id'], 'Integer') : 1;	
     $sql = "SELECT * FROM civicrm_civirebux_configuration WHERE id=".$id;
@@ -90,7 +111,12 @@ class CRM_Civirebux_BAO_Report{
     }
     CRM_Utils_JSON::output($config);
   }
-
+  
+  /**
+  * Outputs a JSON object containing the name and id of the report template which is both added to navigation as well as saved into the database. 
+  * @function addToNavigation
+  * @return array $config
+  */
   public static function addToNavigation(){
     $renderer = isset($_REQUEST['renderer']) ? CRM_Utils_Type::escape($_REQUEST['renderer'], 'String') : '';
     $aggregator = isset($_REQUEST['aggregator']) ? CRM_Utils_Type::escape($_REQUEST['aggregator'], 'String') : '';
