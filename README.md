@@ -6,12 +6,13 @@ Civi**REBUX**
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Civicrm_Logo.png" width="300">
 
-This repository contains the design and implementation of a report building module extension for CiviCRM, built as a part of the **Google Summer of Code 2016** program. 
+This repository contains the implementation of a report building module extension for CiviCRM, built as a part of the **Google Summer of Code 2016** program. 
 
 ----------
 
+**CiviREBUX** is a drag-n-drop report builder interface for making CiviCRM-style reports. It supports multiple data transformation functionalities like pivoting, filtering, sorting and can render the results both in a tabular format as well as graphically in real-time. It can be referred to as a spreadsheet software running seamlessly on your browser.   
 
-This extension provides a new interface to CiviCRM Reports page, which is **much similar** to the most popular spreadsheet softwares, yet **very different** from them in terms of its **drag'n'drop UI** and extended functionality for **data exploration and analysis**. *Currently, I am working on supporting just CiviCRM Contribution data*.
+*Currently supports CiviCRM Contribution and Membership data only.*
 
 Installation
 ------
@@ -25,17 +26,30 @@ Usage
 
 After installing the new page is available from the menu bar in your CiviCRM dashboard: `Reports -> CiviREBUX`
 
-What's New?
-------
 
-I am using [Pivottable.js](http://nicolas.kruchten.com/pivottable) along with [Civix](https://github.com/totten/civix) to build CiviREBUX. Here is a brief description of what these are - 
+New Features
+-------------
 
->  PivotTable.js
+* Drag-n-Drop functionality - 
+  Add/Remove attributes (rows and columns in your report) into/out of the scope by simply dragging them into/out of the rows (left) and column (top) space in the UI.
 
-PivotTable.js implements a drag'n'drop UI to pivot tables, similar to most of the popular spreadsheet softwares. User can drag attributes into/out of the row/column areas, and specify rendering, aggregation and filtering options. 
+* Rendering -
+  Selecting how the data will be displayed - tabular (default), bar charts, row and column heatmaps, scatter plots et cetera.
 
-Pivottable.js enables data exploration and analysis by turning the CiviCRM Contribution data into a summary table and then allows the user to manipulate this summary table and render it graphically.
+* Exporting into TSV/CSV - 
+  Exporting the report template into CSV and TSV formats (available for download).
 
-> Civix
+* Aggregators - 
+  Defining what will be displayed in the cells - unique count, sum, average, trimmed mean, minimum, maximum et cetera along with dynamic aggregators viz. Monthly, Daily and Yearly.
 
-Civix is a command-line tool for building CiviCRM extensions.
+* Filtering - 
+  Filtering and searching to locate specific records to be included in the report.
+
+* Saving and Loading Report Templates:
+  Saving a report template which can be loaded later. Added support for overwriting an already saved report template as well. 
+
+* Adding Report to Navigation Menu:
+  Adding the most frequently used report template directly into the CiviCRM Navigation Menu under Reports >> CiviREBUX.
+
+* Viewing Saved Report Templates:
+  Loading a report template by simply clicking the row corresponding to that template from a tabular list of previously saved report templates.
