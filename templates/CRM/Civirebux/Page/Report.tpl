@@ -40,7 +40,6 @@ Select which CiviCRM data do you want to use? (<em>default: Contribution</em>)
 </select>
 <input type="submit" value="Go"/>
 </form>
-
 <br>
 
 {* Pivot Table Smarty Template *}
