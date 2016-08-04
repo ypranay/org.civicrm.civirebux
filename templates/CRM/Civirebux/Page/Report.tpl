@@ -477,7 +477,7 @@ CRM.$(function () {
     currConfig['aggregatorName'] = config['aggregator'];
     currConfig['name'] = config['name'];
     currConfig['id'] = config['id'];
-    currConfig['type'] = config['type']
+    currConfig['type'] = config['type'];
     CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});	
     cj("#save").val("Save");		
     jQuery("#reportPivotTable").pivotUI(data, {
@@ -512,7 +512,7 @@ CRM.$(function () {
       autoSortUnusedAttrs: true,
       unusedAttrsVertical: false
     }, true);
-    cj("#title").html(reportType+" Summary Report | "+config['name']);
+    cj("#title").html(config['type']+" Summary Report | "+config['name']);
     currConfig['id'] = config['id'];
   }
   else{
