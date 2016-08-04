@@ -469,9 +469,15 @@ CRM.$(function () {
   var config = {/literal}{$report_config}{literal};
   var derivers = jQuery.pivotUtilities.derivers;
   var sortAs = jQuery.pivotUtilities.sortAs;
-  var e = document.getElementById("CRMData");
-  var reportType = e.options[e.selectedIndex].value;
   if(config.length != 0){
+    currConfig['vals'] = config['vals'];
+    currConfig['rows'] = config['rows'];
+    currConfig['cols'] = config['cols'];
+    currConfig['rendererName'] = config['renderer'];
+    currConfig['aggregatorName'] = config['aggregator'];
+    currConfig['name'] = config['name'];
+    currConfig['id'] = config['id'];
+    currConfig['type'] = config['type']
     CRM.alert(ts('Report Template Loaded!!'),'CiviREBUX: Success','success',{'expires':3000});	
     cj("#save").val("Save");		
     jQuery("#reportPivotTable").pivotUI(data, {
@@ -510,6 +516,16 @@ CRM.$(function () {
     currConfig['id'] = config['id'];
   }
   else{
+    e = document.getElementById("CRMData");
+    reportType = e.options[e.selectedIndex].value;
+    currConfig['vals'] = [];
+    currConfig['rows'] = getRows();
+    currConfig['cols'] = [];
+    currConfig['rendererName'] = "Table";
+    currConfig['aggregatorName'] = "Count";
+    currConfig['name'] = "New Report";
+    currConfig['id'] = 0;
+    currConfig['type'] = reportType;
     cj("#save").val("Save New");
     jQuery("#reportPivotTable").pivotUI(data, {
       rendererName: "Table",
