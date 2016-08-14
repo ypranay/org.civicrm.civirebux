@@ -9,8 +9,10 @@ Civi**REBUX**
 This repository contains the implementation of a report building module extension for CiviCRM LLC, built as a part of the **Google Summer of Code 2016** program. Please read the [wiki](https://github.com/ypranay/org.civicrm.civirebux/wiki) for detailed information about CiviREBUX.
 
 
-![](https://img.shields.io/badge/codecov-unknown-lightgrey.svg)
+![](https://img.shields.io/badge/Project%20Stage-Production%20Ready-brightgreen.svg)
 [![HitCount](https://hitt.herokuapp.com/{username||org}/{project-name}.svg)](https://github.com/ypranay/org.civicrm.civirebux)
+[![Open Source Love](https://badges.frapsoft.com/os/gpl/gpl.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 ----------
 
