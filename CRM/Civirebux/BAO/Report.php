@@ -1,12 +1,13 @@
 <?php 
 /**
-* Class handles all the ajax requests
+* Class handling all the ajax requests. Please view the wiki for a detailed explanation.
 */
 class CRM_Civirebux_BAO_Report{
   
   /**
    * Outputs id of the newly added report template or the older report id, in case of overwriting an already saved report template.
    * For new reports, oldId=0 is passed and for overwriting, id of the report to be overwritten is passed as oldId
+   * @function save
    * @return array $ret
    */
   public static function save(){

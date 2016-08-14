@@ -2,19 +2,19 @@
 <extension key="org.civicrm.civirebux" type="module">
   <file>civirebux</file>
   <name>CiviREBUX</name>
-  <description>Report Building module extension for CiviCRM</description>
+  <description>Report Building Module Extension for CiviCRM</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>ypranay</author>
     <email>y.pranay@gmail.com</email>
   </maintainer>
-  <releaseDate>2016-06-12</releaseDate>
+  <releaseDate>2016-08-16</releaseDate>
   <version>1.0</version>
-  <develStage>alpha</develStage>
+  <develStage>stable release</develStage>
   <compatibility>
-    <ver>4.2</ver>
+    <ver>4.7</ver>
   </compatibility>
-  <comments>Boy! This is still undevelopment</comments>
+  <comments>This extension was built as a part of Google Summer of Code 2016 by Pranay Yadav, a final year Computer Science student at Indian Insitute of Technology Kharagpur, under the mentorship of Brian Shaughnessy and Jaap Jansma. It is a native extension and tested for compatibility with CiviCRM 4.7.</comments>
   <civix>
     <namespace>CRM/Civirebux</namespace>
   </civix>

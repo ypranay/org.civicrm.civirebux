@@ -1,8 +1,8 @@
 <?php
 class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
   /**
-   * While installing
-   * 
+   * While installing.
+   * @function install
    * @return boolean
    */
   public function install() {
@@ -27,17 +27,17 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
     CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS `civicrm_civirebux_configuration`");
 
     CRM_Core_DAO::executeQuery("CREATE TABLE `civicrm_civirebux_configuration` (
-        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-        `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-        `renderer` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `aggregator` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `vals` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `rows` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `cols` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        `desc` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-        PRIMARY KEY (`id`)
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+      `renderer` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `aggregator` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `vals` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `rows` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `cols` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `desc` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+      PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 
     return TRUE;
@@ -45,7 +45,7 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
 
   /**
    * While uninstalling
-   * 
+   * @function uninstall
    * @return boolean
    */
   public function uninstall()
@@ -58,7 +58,7 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
 
   /**
    * While enabling extension
-   * 
+   * @function onEnable
    * @return boolean
    */
   public function onEnable() {
@@ -69,7 +69,7 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
 
   /**
    * While disabling extension
-   * 
+   * @function onDisable
    * @return boolean
    */
   public function onDisable() {
