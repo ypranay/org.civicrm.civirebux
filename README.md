@@ -26,11 +26,12 @@ Installation
 - Download the repository and place it in the CiviCRM extensions dir of your Wordpress site.
 - From your CiviCRM dashboard, goto `Administer -> System Settings -> Manage Extensions (for CiviCRM < 4.7)` or,  `Administer -> System Settings -> Extensions (for CiviCRM >= 4.7)`
 - Install **CiviREBUX** (org.civicrm.civirebux) extension.
+- CiviREBUX also requires a custom permission - *access CiviCRM Civirebux* , so please apply that to your user role as well.
 
 Usage
 ------
 
-After installing the new page is available from the menu bar in your CiviCRM dashboard: `Reports -> CiviREBUX`
+After installing the new page is available from the menu bar in your CiviCRM dashboard: `Reports >> CiviREBUX`
 
 
 New Features
