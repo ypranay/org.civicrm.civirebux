@@ -23,12 +23,12 @@ This repository contains the implementation of a report building module extensio
 Installation
 ------
 
-- Download the repository and place it in the CiviCRM extensions dir of your Wordpress site.
-- From your CiviCRM dashboard, goto `Administer -> System Settings -> Manage Extensions (for CiviCRM < 4.7)` or,  `Administer -> System Settings -> Extensions (for CiviCRM >= 4.7)`
-- Install **CiviREBUX** (org.civicrm.civirebux) extension.
+- Download the repository and place it in the CiviCRM extensions directory of your site.
+- From your CiviCRM dashboard, goto `Administer >> System Settings >> Manage Extensions` *(for CiviCRM < 4.7 †)* or,  `Administer >> System Settings >> Extensions` *(for CiviCRM >= 4.7)*
+- Install the **CiviREBUX** (org.civicrm.civirebux) extension.
 - CiviREBUX also requires a custom permission - *access CiviCRM Civirebux* , so please apply that to your user role as well.
 
-**As of now, please prefer to use CiviCRM 4.7 only!**
+**† As of now, please prefer to use CiviCRM 4.7 only!**
 
 Usage
 ------
@@ -55,7 +55,7 @@ New Features
   Filtering and searching to locate specific records to be included in the report.
 
 * Saving and Loading Report Templates:
-  Saving a report template which can be loaded later. Added support for overwriting an already saved report template as well. 
+  Saving a report template which can be loaded later. Added support for overwriting an already saved report template as well.
 
 * Adding Report to Navigation Menu:
   Adding the most frequently used report template directly into the CiviCRM Navigation Menu under Reports >> CiviREBUX.
