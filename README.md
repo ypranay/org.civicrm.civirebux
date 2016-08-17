@@ -18,7 +18,7 @@ This repository contains the implementation of a report building module extensio
 
 **CiviREBUX** is a drag-n-drop report builder interface for making CiviCRM-style reports. It supports multiple data transformation functionalities like pivoting, filtering, sorting and can render the results both in a tabular format as well as graphically in real-time. It can be referred to as a spreadsheet software running seamlessly on your browser.   
 
-*Currently supports CiviCRM Contribution and Membership data only.*
+*Currently supports CiviCRM Contribution and Membership data only. Developed and Tested for CiviCRM 4.7!*
 
 Installation
 ------
@@ -27,6 +27,8 @@ Installation
 - From your CiviCRM dashboard, goto `Administer -> System Settings -> Manage Extensions (for CiviCRM < 4.7)` or,  `Administer -> System Settings -> Extensions (for CiviCRM >= 4.7)`
 - Install **CiviREBUX** (org.civicrm.civirebux) extension.
 - CiviREBUX also requires a custom permission - *access CiviCRM Civirebux* , so please apply that to your user role as well.
+
+**As of now, please prefer to use CiviCRM 4.7 only!**
 
 Usage
 ------
