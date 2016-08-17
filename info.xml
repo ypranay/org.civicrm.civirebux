@@ -1,8 +1,15 @@
 <?xml version="1.0"?>
 <extension key="org.civicrm.civirebux" type="module">
   <file>civirebux</file>
+  <downloadUrl>https://github.com/ypranay/org.civicrm.civirebux/archive/master.zip</downloadUrl>
   <name>CiviREBUX</name>
   <description>Report Building Module Extension for CiviCRM</description>
+  <urls>
+    <url desc="Main Extension Page">https://github.com/ypranay/org.civicrm.civirebux</url>
+    <url desc="Documentation">https://github.com/ypranay/org.civicrm.civirebux/wiki</url>
+    <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
+    <url desc="Support">https://forum.civicrm.org/index.php?topic=37100.0</url>
+  </urls>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>ypranay</author>
@@ -10,7 +17,7 @@
   </maintainer>
   <releaseDate>2016-08-16</releaseDate>
   <version>1.0</version>
-  <develStage>stable release</develStage>
+  <develStage>stable</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
