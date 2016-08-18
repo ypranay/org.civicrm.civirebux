@@ -3,7 +3,7 @@
   <file>civirebux</file>
   <downloadUrl>https://github.com/ypranay/org.civicrm.civirebux/archive/v1.0.zip</downloadUrl>
   <name>CiviREBUX</name>
-  <description>Report Building Module Extension for CiviCRM</description>
+  <description>A native CiviCRM extension for drafting custom Contribution and Membership reports via a drag-n-drop interface. CiviREBUX combines powerful visualization and transformation techniques which gives users full capabilities of modern browsers and freedom to design the right elements for their reports. CiviREBUX also supports saving and loading of report templates for later use. If you are using CiviCRM for handling your organizational needs for CRM, CiviREBUX integrates seamlessly within your CiviCRM Dashboard and goes live seconds after installing the extension. CiviREBUX is a mix of the most popular desktop-based spreadsheet software and fast browser applications - essentially, a spreadsheet software running on your browser.</description>
   <urls>
     <url desc="Main Extension Page">https://github.com/ypranay/org.civicrm.civirebux</url>
     <url desc="Documentation">https://github.com/ypranay/org.civicrm.civirebux/wiki</url>
