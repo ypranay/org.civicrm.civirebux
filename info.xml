@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="org.civicrm.civirebux" type="module">
   <file>civirebux</file>
-  <downloadUrl>https://github.com/ypranay/org.civicrm.civirebux/archive/master.zip</downloadUrl>
+  <downloadUrl>https://github.com/ypranay/org.civicrm.civirebux/archive/v1.0.zip</downloadUrl>
   <name>CiviREBUX</name>
   <description>Report Building Module Extension for CiviCRM</description>
   <urls>
