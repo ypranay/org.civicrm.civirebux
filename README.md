@@ -10,7 +10,6 @@ This repository contains the implementation of a report building module extensio
 
 
 ![](https://img.shields.io/badge/Project%20Stage-Production%20Ready-brightgreen.svg)
-[![HitCount](https://hitt.herokuapp.com/{username||org}/{project-name}.svg)](https://github.com/ypranay/org.civicrm.civirebux)
 [![Open Source Love](https://badges.frapsoft.com/os/gpl/gpl.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
