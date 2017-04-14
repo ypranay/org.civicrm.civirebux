@@ -19,12 +19,12 @@ class CRM_Civirebux_BAO_Report{
     $name = isset($_REQUEST['name']) ? CRM_Utils_Type::escape($_REQUEST['name'], 'String') : '';
     $time = isset($_REQUEST['time']) ? CRM_Utils_Type::escape($_REQUEST['time'], 'String') : '';
     $oldid = isset($_REQUEST['oldId']) ? CRM_Utils_Type::escape($_REQUEST['oldId'], 'Integer') : 0;
-    $desc = isset($_REQUEST['desc']) ? CRM_Utils_Type::escape($_REQUEST['desc'], 'String') : '';
+    $descr = isset($_REQUEST['descr']) ? CRM_Utils_Type::escape($_REQUEST['descr'], 'String') : '';
     $type = isset($_REQUEST['type']) ? CRM_Utils_Type::escape($_REQUEST['type'], 'String') : '';
     $ret = array();
     if($oldid == 0){
-      $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`,`desc`,`type`)
-        VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."','".$desc."','".$type."')";		
+      $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`,`descr`,`type`)
+        VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."','".$descr."','".$type."')";		
       CRM_Core_DAO::executeQuery($sql);
       $id=0;
       $dao = CRM_Core_DAO::executeQuery('SELECT `id` FROM civicrm_civirebux_configuration WHERE `name`="'.$name.'"');
@@ -34,7 +34,7 @@ class CRM_Civirebux_BAO_Report{
       $ret['id'] = $id;
     }
     else{
-      $sql = "UPDATE civicrm_civirebux_configuration SET `name`='".$name."',`renderer`='".$renderer."',`aggregator`='".$aggregator."',`vals`='".$vals."',`rows`='".$rows."',`cols`='".$cols."',`time`='".$time."',`desc`='".$desc."' WHERE `id`=".$oldid;
+      $sql = "UPDATE civicrm_civirebux_configuration SET `name`='".$name."',`renderer`='".$renderer."',`aggregator`='".$aggregator."',`vals`='".$vals."',`rows`='".$rows."',`cols`='".$cols."',`time`='".$time."',`descr`='".$descr."' WHERE `id`=".$oldid;
       CRM_Core_DAO::executeQuery($sql);
       $ret['id'] = $oldid;
     }
@@ -61,7 +61,7 @@ class CRM_Civirebux_BAO_Report{
       $config['name'] = $dao->name;
       $config['time'] = $dao->time;
       $config['id'] = $dao->id;
-      $config['desc'] = $dao->desc;
+      $config['descr'] = $dao->descr;
       $config['type'] = $dao->type;
       array_push($array_configs,$config);
     }
@@ -69,12 +69,12 @@ class CRM_Civirebux_BAO_Report{
   }
 
  /**
-  * Outputs a JSON object with an array containing [id,name,type,desc,time] <- fields from all the report configurations from the database.
+  * Outputs a JSON object with an array containing [id,name,type,descr,time] <- fields from all the report configurations from the database.
   * @function getDataForSavedReports
   * @return array $array_configs
   */
   public static function getDataForSavedReports(){
-    $sql = "SELECT `id`, `name`, `type`, `desc`, `time` FROM civicrm_civirebux_configuration";
+    $sql = "SELECT `id`, `name`, `type`, `descr`, `time` FROM civicrm_civirebux_configuration";
     $dao = CRM_Core_DAO::executeQuery($sql);
     $array_configs = array();
     while($dao->fetch()){
@@ -82,7 +82,7 @@ class CRM_Civirebux_BAO_Report{
       array_push($config,$dao->id);
       array_push($config,$dao->name);
       array_push($config,$dao->type);
-      array_push($config,$dao->desc);
+      array_push($config,$dao->descr);
       array_push($config,$dao->time);
       array_push($array_configs,$config);
     }
@@ -126,10 +126,10 @@ class CRM_Civirebux_BAO_Report{
     $cols = isset($_REQUEST['cols']) ? CRM_Utils_Type::escape($_REQUEST['cols'], 'String') : '';
     $name = isset($_REQUEST['name']) ? CRM_Utils_Type::escape($_REQUEST['name'], 'String') : '';
     $time = isset($_REQUEST['time']) ? CRM_Utils_Type::escape($_REQUEST['time'], 'String') : '';
-    $desc = isset($_REQUEST['desc']) ? CRM_Utils_Type::escape($_REQUEST['desc'], 'String') : ''; 
+    $descr = isset($_REQUEST['descr']) ? CRM_Utils_Type::escape($_REQUEST['descr'], 'String') : ''; 
     $type = isset($_REQUEST['type']) ? CRM_Utils_Type::escape($_REQUEST['type'], 'String') : '';
-    $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`,`desc`,`type`)
-      VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."','".$desc."','".$type."')";
+    $sql = "INSERT INTO civicrm_civirebux_configuration (`id`,`name`,`renderer`,`aggregator`,`vals`,`rows`,`cols`,`time`,`descr`,`type`)
+      VALUES (NULL,'".$name."','".$renderer."','".$aggregator."','".$vals."','".$rows."','".$cols."','".$time."','".$descr."','".$type."')";
     CRM_Core_DAO::executeQuery($sql);
 
     $dao = CRM_Core_DAO::executeQuery('SELECT `id` FROM civicrm_civirebux_configuration WHERE `name`="'.$name.'"');

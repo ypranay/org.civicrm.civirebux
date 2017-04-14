@@ -136,14 +136,14 @@ cj("#save").click( function(){
       buttons: {
         "OK": function(){
           var name = cj("#saveReportAs").val();
-          var desc = cj("#saveReportDesc").val();
+          var descr = cj("#saveReportDesc").val();
           if(name == ''){
             name = "CiviREBUX Report "+currTimeStamp;
           }
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId=0',   // for new reports, passing oldId = 0
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&descr='+descr+'&type='+reportType+'&oldId=0',   // for new reports, passing oldId = 0
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Saved!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -173,14 +173,14 @@ cj("#save").click( function(){
       buttons: {
         "OK": function(){
           var name = cj("#saveReportAs").val();
-          var desc = cj("#saveReportDesc").val();   
+          var descr = cj("#saveReportDesc").val();   
           if(name == ''){
             name = "CiviREBUX Report "+currTimeStamp;
           }
           jQuery.ajax({
             type: "POST",
             url: crmAjaxURL,
-            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType+'&oldId='+currConfig['id'],//for already saved reports,oldId=id of saved report
+            data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&descr='+descr+'&type='+reportType+'&oldId='+currConfig['id'],//for already saved reports,oldId=id of saved report
           }).done(function (data){
             cj("#saveDialog").dialog("close");
             CRM.alert(ts('Report Template Updated!!'),'CiviREBUX: Success','success',{'expires':3000});
@@ -209,7 +209,7 @@ var crmLoadAjaxURL = CRM.url('civicrm/civirebux/ajax/load');
 // CiviCRM-style URL for directing Ajax calls to add a report to navigation menu and save it simultaneously
 var crmAddToNavAjaxURL = CRM.url("civicrm/civirebux/ajax/addtonavigation");
 
-// CiviCRM-style URL for directing Ajax calls to get a list of saved reports - just id, name, type, desc and time fields
+// CiviCRM-style URL for directing Ajax calls to get a list of saved reports - just id, name, type, descr and time fields
 var crmSavedReportsDataAjaxURL = CRM.url("civicrm/civirebux/ajax/getdataforsavedreports");
 
 // Trigger function on load button click
@@ -340,7 +340,7 @@ cj("#addToNav").click( function(){
   title: "Add Report To Navigation",
   buttons: {
     "OK": function(){
-      var desc = cj("#addToNavReportDesc").val();
+      var descr = cj("#addToNavReportDesc").val();
       var name = cj("#addToNavSaveReportAs").val();
       if(name == ''){
         name = "CiviREBUX Report "+currTimeStamp;
@@ -348,7 +348,7 @@ cj("#addToNav").click( function(){
       jQuery.ajax({
         type: "POST",
         url: crmAddToNavAjaxURL,
-        data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&desc='+desc+'&type='+reportType
+        data: 'name='+name+'&renderer='+currConfig['rendererName']+'&aggregator='+currConfig['aggregatorName']+'&vals='+currConfig['vals']+'&rows='+currConfig['rows']+'&cols='+currConfig['cols']+'&time='+currTimeStamp+'&descr='+descr+'&type='+reportType
       }).done(function (data){
         cj("#addToNavDialog").dialog("close");
         document.location = CRM.url('civicrm/civirebux/'+data['id']);
