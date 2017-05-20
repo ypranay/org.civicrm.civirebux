@@ -35,7 +35,7 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
       `rows` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
       `cols` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
       `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      `desc` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `descr` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
       `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
       PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
@@ -77,4 +77,5 @@ class CRM_Civirebux_Upgrader extends CRM_Civirebux_Upgrader_Base {
     CRM_Core_BAO_Navigation::resetNavigation();
     return TRUE;
   }
+
 }
